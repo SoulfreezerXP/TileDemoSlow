@@ -3,8 +3,48 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsView>
 #include <QHBoxLayout>
+#include <QKeyEvent>
+#include <QMessageBox>
+#include <QMetaEnum>
 #include <QOpenGLWidget>
 #include <QStyleOption>
+
+#include <chrono>
+#include <iostream>
+
+template< typename EnumType >
+QString ToString( const EnumType& enumValue )
+{
+    const char* enumName = qt_getEnumName( enumValue );
+    const QMetaObject* metaObject = qt_getEnumMetaObject( enumValue );
+    if (metaObject)
+    {
+        const int enumIndex = metaObject->indexOfEnumerator( enumName );
+        return QString("%1::%2::%3").arg( metaObject->className(),
+                                          enumName,
+                                          metaObject->enumerator( enumIndex ).valueToKey( enumValue ) );
+    }
+
+    return QString("%1::%2").arg(enumName).arg(static_cast<int>(enumValue));
+}
+
+class Scene : public QGraphicsScene
+{
+public:
+   explicit Scene( QWidget *parent = nullptr ) : QGraphicsScene( parent )
+   {}
+
+   bool event( QEvent *event ) override
+   {
+       auto start = std::chrono::high_resolution_clock::now();
+        const bool ret = QGraphicsScene::event( event );
+       auto stop = std::chrono::high_resolution_clock::now();
+       auto duration = std::chrono::duration_cast< std::chrono::microseconds >( stop - start );
+       std::cout << "EventType: " << ToString( event->type() ).toStdString() << " -> Duration: " << duration.count()
+                 << " microseconds " << std::endl;
+       return ret;
+   }
+};
 
 class View : public QFrame
 {
@@ -38,6 +78,7 @@ public:
         setAcceptHoverEvents( true );
         setPixmap( graphic );
         setPos( QPointF( x * 32 , y * 32 ) );
+        setShapeMode( ShapeMode::BoundingRectShape );
     }
 protected:
     auto paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget ) -> void override
@@ -56,13 +97,14 @@ protected:
 
 class MainWindow : public QWidget
 {
-    QGraphicsScene * scene{ nullptr };
+    Scene * scene{ nullptr };
+    View * view{ nullptr };;
 public:
     explicit MainWindow( QWidget *parent = nullptr ) : QWidget( parent ),
-                                                       scene( new QGraphicsScene( this ) )
+                                                       scene( new Scene( this ) ),
+                                                       view( new View() )
     {
         auto pixmap = new QPixmap( "tile_empty.png" );
-        auto view   = new View();
         auto layout = new QHBoxLayout;
 
         for ( size_t  y=0; y < 2000; y++ )
