@@ -42,6 +42,17 @@ target_link_libraries(TileDemoSlow  PRIVATE Qt6::Widgets)
 
 target_include_directories(TileDemoSlow  PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_sources(TileDemoSlow  PRIVATE
+  #Header
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/main_window.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/pixmap_atlas.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/render_tile.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/tile.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/view.h"
   #Souces
-  "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/main_window.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/pixmap_atlas.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/render_tile.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/tile.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/view.cpp"
 )
