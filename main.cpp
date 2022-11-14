@@ -54,7 +54,7 @@ public:
         this->x = x;
         this->y = y;
         //setZValue( 1 );
-        //setAcceptHoverEvents( true );
+        setAcceptHoverEvents( true );
         setPixmap( tilePalette->get( tilePaletteGraphicIdParam ) );
         setPos( QPointF( x, y ) );
         setShapeMode( ShapeMode::BoundingRectShape );
