@@ -8,7 +8,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-add_executable(TileDemoSlow WIN32)
+add_executable(TileDemoSlow WIN32 "${CMAKE_CURRENT_SOURCE_DIR}/src/application.qrc" )
 
 if ( MSVC )
     set_target_properties(TileDemoSlow  PROPERTIES LINK_FLAGS "/ignore:4099")
@@ -48,6 +48,7 @@ target_sources(TileDemoSlow  PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}/include/render_tile.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/include/tile.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/include/tile_map.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/tile_palette_model.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/include/view.h"
   #Souces
   "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
@@ -56,5 +57,6 @@ target_sources(TileDemoSlow  PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}/src/render_tile.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/tile.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/tile_map.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/tile_palette_model.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/view.cpp"
 )
