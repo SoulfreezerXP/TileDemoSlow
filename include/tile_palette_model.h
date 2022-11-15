@@ -1,11 +1,13 @@
-#ifndef TILE_PALETTE_MODEL_H
-#define TILE_PALETTE_MODEL_H
+#pragma once
 
+#include <QAbstractTableModel>
 
-class tile_palette_model
+class TilePaletteModel : public QAbstractTableModel
 {
+     Q_OBJECT
 public:
-    tile_palette_model();
+     TilePaletteModel( QObject *parent );
+     int rowCount( const QModelIndex &parent = QModelIndex() ) const override;
+     int columnCount( const QModelIndex &parent = QModelIndex() ) const override;
+     QVariant data( const QModelIndex &index, int role = Qt::DisplayRole ) const override;
 };
-
-#endif // TILE_PALETTE_MODEL_H

@@ -17,17 +17,19 @@ auto main( int argc, char *argv[] ) -> int
     QCoreApplication::setOrganizationName( "Soulfreezer" );
     QCoreApplication::setApplicationName( "SoulCraft" );
     QCoreApplication::setApplicationVersion(QT_VERSION_STR);
-    app.setStyle( QStyleFactory::create( "Fusion" ) );
+
+    qDebug() << QStyleFactory::keys();
+    app.setStyle( QStyleFactory::create( "Fusion" ) ); //windowsvista", "Windows", "Fusion")
 
     QCommandLineParser parser;
-    parser.setApplicationDescription(QCoreApplication::applicationName());
+    parser.setApplicationDescription( QCoreApplication::applicationName() );
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("file", "The file to open.");
     parser.process(app);
 
     MainWindow mainWin;
-    mainWin.show();
+    mainWin.showMaximized();
     return app.exec();
 
 }

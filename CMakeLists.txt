@@ -49,6 +49,7 @@ target_sources(TileDemoSlow  PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}/include/tile.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/include/tile_map.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/include/tile_palette_model.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/tile_palette_view.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/include/view.h"
   #Souces
   "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
@@ -58,5 +59,6 @@ target_sources(TileDemoSlow  PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}/src/tile.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/tile_map.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/tile_palette_model.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/tile_palette_view.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/view.cpp"
 )

@@ -1,4 +1,6 @@
 #include "main_window.h"
+#include "qheaderview.h"
+#include "tile_palette_model.h"
 
 #include <QKeyEvent>
 #include <QBoxLayout>
@@ -15,23 +17,31 @@
 #include <QDir>
 #include <QSaveFile>
 #include <QFileDialog>
+#include <QTableView>
 
 MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ),
                                             tileMapLeft( new TileMap( parent ) ),
-                                            tileMapRight( new TileMap( parent ) )
+                                            tileMapRight( new TileMap( parent ) ),
+                                            tilePaletteView( new TilePaletteView( parent ) )
 {
-    setWindowTitle( tr("SoulControl ©2020 by Soulfreezer[*]") );
+    setWindowTitle( tr("SoulCraft ©2022 by Soulfreezer[*]") );
 
     tileMapLeft->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     tileMapRight->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
-    addDockWidget( Qt::LeftDockWidgetArea, tileMapLeft );
+    addDockWidget( Qt::LeftDockWidgetArea, tilePaletteView );
+    addDockWidget( Qt::RightDockWidgetArea, tileMapLeft );
     addDockWidget( Qt::RightDockWidgetArea, tileMapRight );
+    splitDockWidget(tileMapLeft, tileMapRight, Qt::Horizontal);
+
+    tilePaletteView->setMinimumWidth( 400 );
+    tileMapLeft->setMinimumWidth( 400 );
+    tileMapRight->setMinimumWidth( 800 );
 
     //Create necessary stuff
     createActions();
     createStatusBar();
-    readSettings();
+    //readSettings();
 }
 
 auto MainWindow::keyPressEvent( QKeyEvent *event ) -> void
