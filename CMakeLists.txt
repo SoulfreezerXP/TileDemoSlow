@@ -47,6 +47,7 @@ target_sources(TileDemoSlow  PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}/include/pixmap_atlas.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/include/render_tile.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/include/tile.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/tile_map.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/include/view.h"
   #Souces
   "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
@@ -54,5 +55,6 @@ target_sources(TileDemoSlow  PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}/src/pixmap_atlas.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/render_tile.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/tile.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/tile_map.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/view.cpp"
 )
