@@ -1,7 +1,7 @@
 #pragma once
 
 #include "tile_map.h"
-#include "tile_palette_view.h"
+#include "tile_palette.h"
 
 #include <QWidget>
 #include <QMainWindow>
@@ -12,7 +12,8 @@ class MainWindow : public QMainWindow
 {
     TileMap *tileMapLeft;
     TileMap *tileMapRight;
-    TilePaletteView *tilePaletteView;
+    TilePalette *tilePalette;
+    TilePalette *tileLayer;
 
     QTextEdit *textEdit;
     QProgressBar  *_progressbar;

@@ -1,6 +1,4 @@
 #include "main_window.h"
-#include "qheaderview.h"
-#include "tile_palette_model.h"
 
 #include <QKeyEvent>
 #include <QBoxLayout>
@@ -22,21 +20,24 @@
 MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ),
                                             tileMapLeft( new TileMap( parent ) ),
                                             tileMapRight( new TileMap( parent ) ),
-                                            tilePaletteView( new TilePaletteView( parent ) )
+                                            tilePalette( new TilePalette( parent ) ),
+                                            tileLayer( new TilePalette( parent ) )
 {
     setWindowTitle( tr("SoulCraft ©2022 by Soulfreezer[*]") );
 
     tileMapLeft->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     tileMapRight->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 
-    addDockWidget( Qt::LeftDockWidgetArea, tilePaletteView );
-    addDockWidget( Qt::RightDockWidgetArea, tileMapLeft );
+    addDockWidget( Qt::LeftDockWidgetArea, tilePalette );
+    addDockWidget( Qt::LeftDockWidgetArea, tileMapLeft );
     addDockWidget( Qt::RightDockWidgetArea, tileMapRight );
-    splitDockWidget(tileMapLeft, tileMapRight, Qt::Horizontal);
+    addDockWidget( Qt::RightDockWidgetArea, tileLayer );
+    splitDockWidget(tilePalette, tileMapLeft, Qt::Horizontal);
+    splitDockWidget(tileMapRight, tileLayer, Qt::Horizontal);
 
-    tilePaletteView->setMinimumWidth( 400 );
-    tileMapLeft->setMinimumWidth( 400 );
-    tileMapRight->setMinimumWidth( 800 );
+    //tilePalette->setMinimumWidth( 400 );
+    //tileMapLeft->setMinimumWidth( 400 );
+    //tileMapRight->setMinimumWidth( 800 );
 
     //Create necessary stuff
     createActions();

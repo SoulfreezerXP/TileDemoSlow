@@ -13,7 +13,7 @@ auto main( int argc, char *argv[] ) -> int
 #endif
 
     QApplication app(argc, argv);
-    app.setAttribute( Qt::AA_DontCreateNativeWidgetSiblings );
+    //app.setAttribute( Qt::AA_DontCreateNativeWidgetSiblings );
     QCoreApplication::setOrganizationName( "Soulfreezer" );
     QCoreApplication::setApplicationName( "SoulCraft" );
     QCoreApplication::setApplicationVersion(QT_VERSION_STR);
