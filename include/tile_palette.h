@@ -4,11 +4,14 @@
 #include <QTreeView>
 #include <QStandardItemModel>
 
-class TilePalette : public QDockWidget
+namespace gamedev::soulcraft
 {
-    Q_OBJECT
-    QStandardItemModel *model;
-public:
-     TilePalette( QObject *parent = nullptr );
-     QTreeView *view;
-};
+    class TilePalette : public QDockWidget
+    {
+        Q_OBJECT
+        QStandardItemModel *model;
+    public:
+         TilePalette( QObject *parent = nullptr );
+         QTreeView *view;
+    };
+}

@@ -3,13 +3,16 @@
 #include <QPixmap>
 #include <string>
 
-class PixmapAtlas
+namespace gamedev::soulcraft
 {
-    std::map< std::string, QPixmap > palette;
-public:
-    explicit PixmapAtlas();
-    auto get( const std::string &id ) -> QPixmap&;
-    auto add( const std::string &id, const QPixmap &graphic ) -> void;
-};
+    class PixmapAtlas
+    {
+        std::map< std::string, QPixmap > palette;
+    public:
+        explicit PixmapAtlas();
+        auto get( const std::string &id ) -> QPixmap&;
+        auto add( const std::string &id, const QPixmap &graphic ) -> void;
+    };
+}
 
 

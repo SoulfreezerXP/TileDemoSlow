@@ -28,7 +28,7 @@ auto main( int argc, char *argv[] ) -> int
     parser.addPositionalArgument("file", "The file to open.");
     parser.process(app);
 
-    MainWindow mainWin;
+    gamedev::soulcraft::MainWindow mainWin;
     mainWin.showMaximized();
     return app.exec();
 
