@@ -47,83 +47,34 @@ namespace gamedev::soulcraft
 
     auto TileMap::prepareRenderTiles() -> void
     {
-        /*if ( vecViewportDimensionInPixel.x < 64 ||
-             vecViewportDimensionInPixel.y < 64 )
-        {
+        if ( vecViewportDimensionInPixel.x < 64 || vecViewportDimensionInPixel.y < 64 )
             return;
-        }
 
         //Clear scene
         scene->clear();
 
+        //RenderTiles scene
+        renderTiles.clear();
 
-
-        size_t numOfTilesX =
-
-        //Create RenderTiles
-        Vector2D vecRenderTilesDimensionInTiles = { 45, 45 };
-
-        for ( size_t  y=0; y < vecRenderTilesDimensionInTiles.y; y++ )
-        {
-            renderTiles.push_back( std::vector< RenderTile* >() );
-
-            for ( size_t  x=0; x < vecRenderTilesDimensionInTiles.x; x++ )
-            {
-                const auto id = tiles[ y ][ x ].getGraphicId();
-                renderTiles[ y ].emplace_back( new RenderTile( x*32, y*32, id, pixmapAtlas ) );
-            }
-        }
-
-        //Add RenderTiles to scene
-        for ( size_t  y=0; y < vecRenderTilesDimensionInTiles.y; y++ )
-            for ( size_t  x=0; x < vecRenderTilesDimensionInTiles.x; x++ )
-                scene->addItem( renderTiles[ y ][ x ] );*/
-    }
-
-    auto TileMap::buildAndShow() -> void
-    {
-        //Prepare PixmapAtlas
+        //Create PixmapAtlas
         pixmapAtlas.add( "empty", QPixmap( "gfx/tile_empty.png" ) );
         pixmapAtlas.add( "mouse_over", QPixmap( "gfx/tile_mouse_over.png" ) );
 
-        //Create Tiles
-        Vector2D vecTileDimensionInPixelLocal{ 32, 32 };
-        Vector3D vecMapDimensionInTilesLocal{ 5000, 5000, 3 };
-        const Tile fillTile{ 0, 0, "empty" };
-        createTiles( vecTileDimensionInPixelLocal, vecMapDimensionInTilesLocal, fillTile, 0 );
-
-        srand( time( NULL ) );
-        for ( size_t  y=0; y < vecMapDimensionInTiles.y; y++ )
-            for ( size_t  x=0; x < vecMapDimensionInTiles.x; x++ )
-            {
-                const int r = ( rand() % 2 ) + 1;
-
-                if (r == 1 )
-                     accessTile( x, y ).setGraphicId( "empty" );
-                else
-                     accessTile( x, y ).setGraphicId( "mouse_over" );
-            }
-
         //Create RenderTiles
-        Vector2D vecRenderTilesDimensionInTiles = { 45, 45 };
+        const size_t numOfTilesX = ( vecViewportDimensionInPixel.x / 32 ) + 3;
+        const size_t numOfTilesY = ( vecViewportDimensionInPixel.y / 32 ) + 3;
 
-        for ( size_t  y=0; y < vecRenderTilesDimensionInTiles.y; y++ )
+        for ( size_t  y=0; y < numOfTilesY; y++ )
         {
             renderTiles.push_back( std::vector< RenderTile* >() );
-
-            for ( size_t  x=0; x < vecRenderTilesDimensionInTiles.x; x++ )
-            {
-                const auto id = tiles[ y ][ x ].getGraphicId();
-                renderTiles[ y ].emplace_back( new RenderTile( x*32, y*32, id, pixmapAtlas ) );
-            }
+            for ( size_t  x=0; x < numOfTilesX; x++ )
+                renderTiles[ y ].emplace_back( new RenderTile( x*32, y*32, "", pixmapAtlas ) );
         }
 
         //Add RenderTiles to scene
-        for ( size_t  y=0; y < vecRenderTilesDimensionInTiles.y; y++ )
-            for ( size_t  x=0; x < vecRenderTilesDimensionInTiles.x; x++ )
+        for ( size_t  y=0; y < numOfTilesY; y++ )
+            for ( size_t  x=0; x < numOfTilesX; x++ )
                 scene->addItem( renderTiles[ y ][ x ] );
-
-        updateMap();
     }
 
     TileMap::TileMap( QWidget *parent )
@@ -160,18 +111,17 @@ namespace gamedev::soulcraft
 
     void TileMap::viewPortSizeChanged( QRect viewSize )
     {
-        //Viewport
-        Vector2D vecViewportPositionInPixelLocal{ 0, 0 };
-        Vector2D vecViewportDimensionInPixelLocal{ static_cast< size_t >( viewSize.width() ),
-                                                   static_cast< size_t >( viewSize.height() ) };
-        setViewport( vecViewportPositionInPixelLocal,
-                     vecViewportDimensionInPixelLocal );
+        //Update Viewport sizes
+        setViewport( Vector2D{ 0, 0 },
+                     Vector2D{ static_cast< size_t >( viewSize.width() ),
+                               static_cast< size_t >( viewSize.height() ) } );
 
-        qDebug() << "TileMap::viewPortSizeChanged(): ViewportDimension:"
-                 << " width : " << viewSize.width()
-                 << " height: " << viewSize.height();
-
+        //Prepare RenderTiles (recreate if necessary)
         prepareRenderTiles();
+
+        //Update map only, when a tilemap exists! ToDo: Check if it is big enough!
+        if ( !tiles.empty() )
+            updateMap();
     }
 
     auto TileMap::getCamera() -> Vector2Df
@@ -183,10 +133,6 @@ namespace gamedev::soulcraft
 
     auto TileMap::setCamera( const Vector2Df& vecCameraPositionParam ) -> std::optional< Vector2Df >
     {
-        qDebug() << "TileMap::setCamera(): ViewportDimension:"
-                 << " width : " << view->contentsRect().width()
-                 << " height: " << view->contentsRect().height();
-
         bool autoCorrected = false;
         size_t sztMaxCamX = 0;
         size_t sztMaxCamY = 0;

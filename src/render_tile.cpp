@@ -11,9 +11,9 @@ namespace gamedev::soulcraft
     {
         this->x = x;
         this->y = y;
-        //setZValue( 1 );
+
         setAcceptHoverEvents( true );
-        setPixmap( pixmapAtlas->get( tilePaletteGraphicIdParam ) );
+        setGraphicId( tilePaletteGraphicIdParam );
         setPos( QPointF( x, y ) );
         setShapeMode( ShapeMode::BoundingRectShape );
     }
@@ -44,7 +44,6 @@ namespace gamedev::soulcraft
     {
         setGraphicId( "mouse_over" );
         QGraphicsPixmapItem::mousePressEvent( event );
-        //setPos( QPointF( x+20, y ) );
         update();
     }
 }

@@ -24,15 +24,13 @@ namespace gamedev::soulcraft
     public:
         explicit TileMap( QWidget *parent = nullptr );
 
-        auto prepareRenderTiles() -> void;
-
-        auto buildAndShow() -> void;
-
         void createTiles( const Vector2D& refVecTileDimensionInPixel,
                           const Vector3D& refVecMapDimensionInTiles,
                           const Tile& fillTile,	size_t sztLayerIndex );
 
         Tile& accessTile( size_t sztTilePosX, size_t sztTilePosY );
+
+        auto updateMap() -> void;
 
         auto getCamera( ) -> Vector2Df;
         auto setCamera( const Vector2Df& vecCameraPositionParam ) -> std::optional< Vector2Df >;
@@ -41,7 +39,8 @@ namespace gamedev::soulcraft
     private:
         void setViewport( const Vector2D& refVecViewportPositionInPixel,
                           const Vector2D& refVecViewportDimensionInPixel );
-        auto updateMap() -> void;
+
+        auto prepareRenderTiles() -> void;
 
         PixmapAtlas pixmapAtlas;
         TileMapScene * scene{ nullptr };

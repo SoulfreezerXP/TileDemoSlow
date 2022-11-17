@@ -47,10 +47,6 @@ namespace gamedev::soulcraft
 
        const QRect availableGeometry =  QGuiApplication::primaryScreen()->availableGeometry();
 
-       qDebug() << "MainWindow::resizeEvent(): "
-                << " width : " << availableGeometry.width()
-                << " height: " << availableGeometry.height();
-
        QList< QDockWidget * > docks;
        docks.append( tilePalette );
        docks.append( tileMapLeft );
@@ -70,8 +66,49 @@ namespace gamedev::soulcraft
 
     void MainWindow::paste()
     {
-        tileMapLeft->buildAndShow();
-        tileMapRight->buildAndShow();
+        //Create Tiles for TileMap - Left
+        {
+            Vector2D vecTileDimensionInPixelLocal{ 32, 32 };
+            Vector3D vecMapDimensionInTilesLocal{ 5000, 5000, 3 };
+            const Tile fillTile{ 0, 0, "empty" };
+            tileMapLeft->createTiles( vecTileDimensionInPixelLocal, vecMapDimensionInTilesLocal, fillTile, 0 );
+
+            srand( time( NULL ) );
+            for ( size_t  y=0; y < vecMapDimensionInTilesLocal.y; y++ )
+                for ( size_t  x=0; x < vecMapDimensionInTilesLocal.x; x++ )
+                {
+                    const int r = ( rand() % 2 ) + 1;
+
+                    if (r == 1 )
+                         tileMapLeft->accessTile( x, y ).setGraphicId( "empty" );
+                    else
+                         tileMapLeft->accessTile( x, y ).setGraphicId( "mouse_over" );
+                }
+
+            tileMapLeft->updateMap();
+        }
+
+        //Create Tiles for TileMap - Right
+        {
+            Vector2D vecTileDimensionInPixelLocal{ 32, 32 };
+            Vector3D vecMapDimensionInTilesLocal{ 5000, 5000, 3 };
+            const Tile fillTile{ 0, 0, "empty" };
+            tileMapRight->createTiles( vecTileDimensionInPixelLocal, vecMapDimensionInTilesLocal, fillTile, 0 );
+
+            srand( time( NULL ) );
+            for ( size_t  y=0; y < vecMapDimensionInTilesLocal.y; y++ )
+                for ( size_t  x=0; x < vecMapDimensionInTilesLocal.x; x++ )
+                {
+                    const int r = ( rand() % 2 ) + 1;
+
+                    if (r == 1 )
+                         tileMapRight->accessTile( x, y ).setGraphicId( "empty" );
+                    else
+                         tileMapRight->accessTile( x, y ).setGraphicId( "mouse_over" );
+                }
+
+            tileMapRight->updateMap();
+        }
     }
 
     auto MainWindow::keyPressEvent( QKeyEvent *event ) -> void

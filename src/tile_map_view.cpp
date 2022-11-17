@@ -8,14 +8,7 @@ namespace gamedev::soulcraft
     void TileMapView::resizeEvent( QResizeEvent* event )
     {
        QGraphicsView::resizeEvent( event );
-
-       const QRect viewSize = contentsRect();
-
-       qDebug() << "TileMapView::resizeEvent(): ViewportDimension is now:"
-                << " width : " << viewSize.width()
-                << " height: " << viewSize.height();
-
-       emit viewPortSizeChanged( viewSize );
+       emit viewPortSizeChanged( contentsRect() );
     }
 }
 
