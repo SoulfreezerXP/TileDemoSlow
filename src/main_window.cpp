@@ -27,25 +27,45 @@ namespace gamedev::soulcraft
     {
         setWindowTitle( tr("SoulCraft ©2022 by Soulfreezer[*]") );
 
-        tileMapLeft->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-        tileMapRight->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-        tilePalette->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-        tileLayer->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
         addDockWidget( Qt::LeftDockWidgetArea, tilePalette );
         addDockWidget( Qt::LeftDockWidgetArea, tileMapLeft );
         addDockWidget( Qt::RightDockWidgetArea, tileMapRight );
         addDockWidget( Qt::RightDockWidgetArea, tileLayer );
+
         splitDockWidget(tilePalette, tileMapLeft, Qt::Horizontal);
         splitDockWidget(tileMapRight, tileLayer, Qt::Horizontal);
 
-        //tilePalette->setMinimumWidth( 400 );
-        //tileMapLeft->setMinimumWidth( 400 );
-        //tileMapRight->setMinimumWidth( 800 );
-
-        //Create necessary stuff
+       //Create necessary stuff
         createActions();
         createStatusBar();
         readSettings();
+    }
+
+    void MainWindow::resizeEvent( QResizeEvent* event )
+    {
+       QMainWindow::resizeEvent( event );
+
+       const QRect availableGeometry =  QGuiApplication::primaryScreen()->availableGeometry();
+
+       qDebug() << "MainWindow::resizeEvent(): "
+                << " width : " << availableGeometry.width()
+                << " height: " << availableGeometry.height();
+
+       QList< QDockWidget * > docks;
+       docks.append( tilePalette );
+       docks.append( tileMapLeft );
+       docks.append( tileMapRight );
+       docks.append( tileLayer );
+
+       const double windowWidth =  availableGeometry.width();
+
+       QList< int > dockSizes;
+       dockSizes.append( 0.1 * windowWidth );
+       dockSizes.append( 0.4 * windowWidth );
+       dockSizes.append( 0.4 * windowWidth );
+       dockSizes.append( 0.1 * windowWidth );
+
+       resizeDocks( docks, dockSizes, Qt::Horizontal );
     }
 
     void MainWindow::paste()
@@ -56,7 +76,7 @@ namespace gamedev::soulcraft
 
     auto MainWindow::keyPressEvent( QKeyEvent *event ) -> void
     {
-        int camSpeed  = 4;
+        int camSpeed  = 1;
         int camSpeedX = 0;
         int camSpeedY = 0;
 

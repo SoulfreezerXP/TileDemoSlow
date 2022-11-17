@@ -23,6 +23,7 @@ namespace gamedev::soulcraft
     public:
         explicit MainWindow( QWidget *parent = nullptr );
         auto keyPressEvent( QKeyEvent *event ) -> void override;
+        void resizeEvent( QResizeEvent* event ) override;
 
         void createActions();
         void createStatusBar();

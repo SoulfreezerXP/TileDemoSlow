@@ -24,6 +24,8 @@ namespace gamedev::soulcraft
     public:
         explicit TileMap( QWidget *parent = nullptr );
 
+        auto prepareRenderTiles() -> void;
+
         auto buildAndShow() -> void;
 
         void createTiles( const Vector2D& refVecTileDimensionInPixel,

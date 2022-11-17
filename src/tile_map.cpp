@@ -45,9 +45,44 @@ namespace gamedev::soulcraft
         throw std::exception( "accessTile(...): Out of bounds!" );
     }
 
+    auto TileMap::prepareRenderTiles() -> void
+    {
+        /*if ( vecViewportDimensionInPixel.x < 64 ||
+             vecViewportDimensionInPixel.y < 64 )
+        {
+            return;
+        }
+
+        //Clear scene
+        scene->clear();
+
+
+
+        size_t numOfTilesX =
+
+        //Create RenderTiles
+        Vector2D vecRenderTilesDimensionInTiles = { 45, 45 };
+
+        for ( size_t  y=0; y < vecRenderTilesDimensionInTiles.y; y++ )
+        {
+            renderTiles.push_back( std::vector< RenderTile* >() );
+
+            for ( size_t  x=0; x < vecRenderTilesDimensionInTiles.x; x++ )
+            {
+                const auto id = tiles[ y ][ x ].getGraphicId();
+                renderTiles[ y ].emplace_back( new RenderTile( x*32, y*32, id, pixmapAtlas ) );
+            }
+        }
+
+        //Add RenderTiles to scene
+        for ( size_t  y=0; y < vecRenderTilesDimensionInTiles.y; y++ )
+            for ( size_t  x=0; x < vecRenderTilesDimensionInTiles.x; x++ )
+                scene->addItem( renderTiles[ y ][ x ] );*/
+    }
+
     auto TileMap::buildAndShow() -> void
     {
-        //PixmapAtlas
+        //Prepare PixmapAtlas
         pixmapAtlas.add( "empty", QPixmap( "gfx/tile_empty.png" ) );
         pixmapAtlas.add( "mouse_over", QPixmap( "gfx/tile_mouse_over.png" ) );
 
@@ -118,7 +153,7 @@ namespace gamedev::soulcraft
         setWidget( container );
         setWindowTitle( tr( "TileDemoSlow" ) );
 
-        //Conenct
+        //Connect
         connect( view, &TileMapView::viewPortSizeChanged,
                  this, &TileMap::viewPortSizeChanged );
     }
@@ -135,6 +170,8 @@ namespace gamedev::soulcraft
         qDebug() << "TileMap::viewPortSizeChanged(): ViewportDimension:"
                  << " width : " << viewSize.width()
                  << " height: " << viewSize.height();
+
+        prepareRenderTiles();
     }
 
     auto TileMap::getCamera() -> Vector2Df
