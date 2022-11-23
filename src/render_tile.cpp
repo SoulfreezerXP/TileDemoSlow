@@ -12,7 +12,7 @@ namespace gamedev::soulcraft
     {
         this->x = x;
         this->y = y;
-        setAcceptHoverEvents( false );                   //ATTENTION
+        setAcceptHoverEvents( false );                  //ATTENTION
         setAcceptedMouseButtons( Qt::NoButton );        //ATTENTION
         setPos( QPointF( x, y ) );
         setShapeMode( ShapeMode::BoundingRectShape );
