@@ -12,6 +12,8 @@ namespace gamedev::soulcraft
 {
     class MainWindow : public QMainWindow
     {
+        PixmapAtlas pixmapAtlas;
+
         TileMap *tileMapLeft;
         TileMap *tileMapRight;
         TilePalette *tilePalette;

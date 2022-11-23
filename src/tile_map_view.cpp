@@ -1,14 +1,14 @@
 #include "tile_map_view.h"
 
+#include <QGraphicsView>
+#include <QScrollBar>
+
 namespace gamedev::soulcraft
 {
-    TileMapView::TileMapView( QWidget *parent ) : QGraphicsView( parent )
+    TileMapViewScrollBar::TileMapViewScrollBar( QWidget *parent ) : QScrollBar( parent )
     {}
 
-    void TileMapView::resizeEvent( QResizeEvent* event )
-    {
-       QGraphicsView::resizeEvent( event );
-       emit viewPortSizeChanged( contentsRect() );
-    }
+    TileMapView::TileMapView( QWidget *parent ) : QGraphicsView( parent )
+    {}
 }
 

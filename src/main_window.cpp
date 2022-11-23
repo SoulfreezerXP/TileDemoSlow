@@ -66,11 +66,17 @@ namespace gamedev::soulcraft
 
     void MainWindow::paste()
     {
+        //Create PixmapAtlas
+        pixmapAtlas.add( "", QPixmap( "gfx/tile_empty.png" ) );
+        pixmapAtlas.add( "mouse_over", QPixmap( "gfx/tile_mouse_over.png" ) );
+        tileMapLeft->setPixmapAtlas( pixmapAtlas );
+        tileMapRight->setPixmapAtlas( pixmapAtlas );
+
         //Create Tiles for TileMap - Left
         {
             Vector2D vecTileDimensionInPixelLocal{ 32, 32 };
-            Vector3D vecMapDimensionInTilesLocal{ 5000, 5000, 3 };
-            const Tile fillTile{ 0, 0, "empty" };
+            Vector3D vecMapDimensionInTilesLocal{ 64, 64, 3 };
+            const Tile fillTile{ 0, 0, "" };
             tileMapLeft->createTiles( vecTileDimensionInPixelLocal, vecMapDimensionInTilesLocal, fillTile, 0 );
 
             srand( time( NULL ) );
@@ -80,7 +86,7 @@ namespace gamedev::soulcraft
                     const int r = ( rand() % 2 ) + 1;
 
                     if (r == 1 )
-                         tileMapLeft->accessTile( x, y ).setGraphicId( "empty" );
+                         tileMapLeft->accessTile( x, y ).setGraphicId( "" );
                     else
                          tileMapLeft->accessTile( x, y ).setGraphicId( "mouse_over" );
                 }
@@ -91,8 +97,8 @@ namespace gamedev::soulcraft
         //Create Tiles for TileMap - Right
         {
             Vector2D vecTileDimensionInPixelLocal{ 32, 32 };
-            Vector3D vecMapDimensionInTilesLocal{ 5000, 5000, 3 };
-            const Tile fillTile{ 0, 0, "empty" };
+            Vector3D vecMapDimensionInTilesLocal{ 64, 64, 3 };
+            const Tile fillTile{ 0, 0, "" };
             tileMapRight->createTiles( vecTileDimensionInPixelLocal, vecMapDimensionInTilesLocal, fillTile, 0 );
 
             srand( time( NULL ) );
@@ -102,7 +108,7 @@ namespace gamedev::soulcraft
                     const int r = ( rand() % 2 ) + 1;
 
                     if (r == 1 )
-                         tileMapRight->accessTile( x, y ).setGraphicId( "empty" );
+                         tileMapRight->accessTile( x, y ).setGraphicId( "" );
                     else
                          tileMapRight->accessTile( x, y ).setGraphicId( "mouse_over" );
                 }
@@ -117,9 +123,9 @@ namespace gamedev::soulcraft
         int camSpeedX = 0;
         int camSpeedY = 0;
 
-        if( event->key() == Qt::Key_D )
+        if( event->key() == Qt::Key_D && !event->isAutoRepeat())
         {
-            camSpeedX = 1 *camSpeed;
+            camSpeedX = 1 * camSpeed;
 
             auto timer = new QTimer(nullptr);
             connect(timer, &QTimer::timeout, this, [ this, camSpeedX, camSpeedY ]
@@ -129,6 +135,9 @@ namespace gamedev::soulcraft
             });
 
             timer->start();
+
+            /*tileMapLeft->setCamera( Vector2Df{ tileMapLeft->getCamera().x + 1,
+                                               tileMapLeft->getCamera().y + camSpeedY } );*/
         }
     }
 
@@ -240,7 +249,7 @@ namespace gamedev::soulcraft
 
     void MainWindow::readSettings()
     {
-        QSettings settings( QCoreApplication::organizationName(), QCoreApplication::applicationName() );
+        /*QSettings settings( QCoreApplication::organizationName(), QCoreApplication::applicationName() );
         const QByteArray geometry = settings.value( "geometry", QByteArray() ).toByteArray();
         if (geometry.isEmpty())
         {
@@ -251,13 +260,13 @@ namespace gamedev::soulcraft
         } else
         {
             restoreGeometry(geometry);
-        }
+        }*/
     }
 
     void MainWindow::writeSettings()
     {
-        QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
-        settings.setValue("geometry", saveGeometry());
+        //QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
+        //settings.setValue("geometry", saveGeometry());
     }
 
     bool MainWindow::maybeSave()
@@ -353,11 +362,9 @@ namespace gamedev::soulcraft
         return QFileInfo(fullFileName).fileName();
     }
 
-
     //=====================================
     // SLOTS
     //=====================================
-
 
     void MainWindow::newFile()
     {

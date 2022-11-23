@@ -1,6 +1,5 @@
 #pragma once
 
-#include "pixmap_atlas.h"
 #include <QStyleOption>
 #include <QGraphicsPixmapItem>
 
@@ -10,15 +9,13 @@ namespace gamedev::soulcraft
     {
         size_t x{ 0 };
         size_t y{ 0 };
-        std::string tilePaletteGraphicId;
-        PixmapAtlas *pixmapAtlas{ nullptr };
+        qint64 pixMapCacheKey{ 0 };
     public:
         explicit RenderTile( size_t x,
                              size_t y,
-                             const std::string &tilePaletteGraphicIdParam,
-                             PixmapAtlas &pixmapAtlasParam );
+                             const QPixmap &pixmapParam );
 
-        auto setGraphicId( const std::string &tilePaletteGraphicIdParam ) -> void;
+        auto setPixmap( const QPixmap &pixmapParam ) -> void;
     protected:
         auto paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget ) -> void override;
         auto mousePressEvent( QGraphicsSceneMouseEvent *event ) -> void override;

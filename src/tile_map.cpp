@@ -4,9 +4,113 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QOpenGLWidget>
+#include <QScrollBar>
 
 namespace gamedev::soulcraft
 {
+    TileMap::TileMap( QWidget *parent )
+    {
+        //Scene
+        scene = new TileMapScene( parent );
+
+        //View
+        view = new TileMapView( parent );
+        view->setViewport( new QOpenGLWidget( ) );
+        view->setViewportUpdateMode( QGraphicsView::FullViewportUpdate );
+        view->setRenderHint( QPainter::Antialiasing, false );
+        view->setDragMode( QGraphicsView::RubberBandDrag );
+        view->setOptimizationFlags( QGraphicsView::DontSavePainterState );
+        view->setTransformationAnchor(QGraphicsView::NoAnchor);
+        view->setAlignment( Qt::AlignTop | Qt::AlignLeft );
+        view->setScene( scene );
+
+        //View ScrollBars
+        view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        viewScrollBarVertical = new TileMapViewScrollBar( parent );
+        viewScrollBarVertical->setOrientation( Qt::Vertical );
+        viewScrollBarVertical->setMinimum( 0 );
+        viewScrollBarVertical->setSingleStep( 32 );
+        viewScrollBarVertical->setMaximum( 0 );
+
+        view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        viewScrollBarHorizontal = new TileMapViewScrollBar( parent );
+        viewScrollBarHorizontal->setOrientation( Qt::Horizontal );
+        viewScrollBarHorizontal->setMinimum( 0 );
+        viewScrollBarHorizontal->setSingleStep( 32 );
+        viewScrollBarHorizontal->setMaximum( 0 );
+
+        //Layout
+        auto layoutH  = new QHBoxLayout;
+        auto layoutV  = new QVBoxLayout;
+        layoutV->addWidget( view );
+        layoutV->addWidget( viewScrollBarHorizontal );
+        layoutH->addLayout( layoutV );
+        layoutH->addWidget( viewScrollBarVertical );
+        QWidget* container = new QWidget;
+        container->setLayout( layoutH );
+        setWidget( container );
+        setWindowTitle( tr( "TileDemoSlow" ) );
+
+        connect( this, &QDockWidget::topLevelChanged,
+                 this, &TileMap::topLevelChangedSlot );
+
+        connect( viewScrollBarVertical, &TileMapViewScrollBar::valueChanged,
+                 this, &TileMap::viewScrollBarVerticalValueChanged );
+
+        connect( viewScrollBarHorizontal, &TileMapViewScrollBar::valueChanged,
+                 this, &TileMap::viewScrollBarHorizontalValueChanged );
+    }
+
+    void TileMap::viewScrollBarVerticalValueChanged( int value )
+    {
+        if ( getCamera().y != value )
+            setCamera( Vector2Df{ getCamera().x, static_cast< double >( value ) } );
+    }
+
+    void TileMap::viewScrollBarHorizontalValueChanged( int value )
+    {
+        if ( getCamera().x != value )
+            setCamera( Vector2Df{ static_cast< double >( value ), getCamera().y } );
+    }
+
+    auto TileMap::resizeMap() -> void
+    {
+        auto newScrollGeoV   = viewScrollBarVertical->geometry();
+        auto newScrollGeoH  =  viewScrollBarHorizontal->geometry();
+        newScrollGeoV.setHeight( view->contentsRect().height() );
+        newScrollGeoH.setWidth( view->contentsRect().width() );
+        viewScrollBarVertical->setGeometry( newScrollGeoV );
+        viewScrollBarHorizontal->setGeometry( newScrollGeoH );
+
+        //Update Viewport sizes
+        setViewport( Vector2D{ 0, 0 },
+                     Vector2D{ static_cast< size_t >( view->contentsRect().width() ),
+                               static_cast< size_t >( view->contentsRect().height() ) } );
+
+        //Prepare RenderTiles (recreate if necessary)
+        prepareRenderTiles();
+
+        //Update map only, when a tilemap and pixmapAtlas exists! ToDo: Check if it is big enough!
+        if ( !tiles.empty() && pixmapAtlas )
+            updateMap();
+    }
+
+    void TileMap::topLevelChangedSlot( bool topLevel )
+    {
+        resizeMap();
+    }
+
+    void TileMap::resizeEvent( QResizeEvent* event )
+    {
+        QDockWidget::resizeEvent( event );
+        resizeMap();
+    }
+
+    auto TileMap::setPixmapAtlas( PixmapAtlas &pixmapAtlasParam ) -> void
+    {
+        pixmapAtlas = &pixmapAtlasParam;
+    }
+
     void TileMap::setViewport( const Vector2D& refVecViewportPositionInPixel,
                                const Vector2D& refVecViewportDimensionInPixel )
     {
@@ -20,26 +124,45 @@ namespace gamedev::soulcraft
                                size_t sztLayerIndex )
     {
         Tile fillTileFinal( fillTile );
-        fillTileFinal.setGraphicId( "empty" );
+        fillTileFinal.setGraphicId( "" );
 
         vecTileDimensionInPixel = refVecTileDimensionInPixel;
         vecMapDimensionInTiles  = refVecMapDimensionInTiles;
 
         tiles.assign( vecMapDimensionInTiles.y, std::vector< Tile >( vecMapDimensionInTiles.x, fillTileFinal ) );
 
-        for ( size_t x = 0; x < vecMapDimensionInTiles.x; ++x )
-            for ( size_t y = 0; y < vecMapDimensionInTiles.y; ++y )
+        for ( size_t y = 0; y < vecMapDimensionInTiles.y; ++y )
+            for ( size_t x = 0; x < vecMapDimensionInTiles.x; ++x )
                 {
                     //nothing to do at the moment
                 }
+
+        //Calculate Scrollbars
+        {
+            size_t sztMaxCamX = 0;
+            size_t sztMaxCamY = 0;
+
+            if ( ( vecMapDimensionInTiles.x * vecTileDimensionInPixel.x ) > vecViewportDimensionInPixel.x )
+                sztMaxCamX = ( vecMapDimensionInTiles.x * vecTileDimensionInPixel.x ) - vecViewportDimensionInPixel.x;
+
+            if ( ( vecMapDimensionInTiles.y * vecTileDimensionInPixel.y ) > vecViewportDimensionInPixel.y )
+                sztMaxCamY = ( vecMapDimensionInTiles.y * vecTileDimensionInPixel.y ) - vecViewportDimensionInPixel.y;
+
+            viewScrollBarVertical->setMinimum( 0 );
+            viewScrollBarVertical->setMaximum( sztMaxCamY );
+
+            viewScrollBarHorizontal->setMinimum( 0 );
+            viewScrollBarHorizontal->setMaximum( sztMaxCamX );
+        }
     }
 
     Tile& TileMap::accessTile( size_t sztTilePosX, size_t sztTilePosY )
     {
-        if ( sztTilePosX >= 0 && sztTilePosX < tiles.size() &&
-             sztTilePosY >= 0 && sztTilePosY < tiles[ sztTilePosX ].size() )
+        if ( sztTilePosY >= 0 && sztTilePosY < tiles.size() &&
+             sztTilePosX >= 0 && sztTilePosX < tiles[ sztTilePosY ].size() )
+
         {
-            return tiles[ sztTilePosX ] [ sztTilePosY ];
+            return tiles[ sztTilePosY ] [ sztTilePosX ];
         }
 
         throw std::exception( "accessTile(...): Out of bounds!" );
@@ -56,72 +179,32 @@ namespace gamedev::soulcraft
         //RenderTiles scene
         renderTiles.clear();
 
-        //Create PixmapAtlas
-        pixmapAtlas.add( "empty", QPixmap( "gfx/tile_empty.png" ) );
-        pixmapAtlas.add( "mouse_over", QPixmap( "gfx/tile_mouse_over.png" ) );
-
         //Create RenderTiles
-        const size_t numOfTilesX = ( vecViewportDimensionInPixel.x / 32 ) + 3;
-        const size_t numOfTilesY = ( vecViewportDimensionInPixel.y / 32 ) + 3;
+        vecNumOfMaxVisibleRenderTiles.x = vecViewportDimensionInPixel.x % 32 == 0 ?
+                    ( vecViewportDimensionInPixel.x / 32 ) + 1 : ( vecViewportDimensionInPixel.x / 32 ) + 2;
 
-        for ( size_t  y=0; y < numOfTilesY; y++ )
+        vecNumOfMaxVisibleRenderTiles.y = vecViewportDimensionInPixel.y % 32 == 0 ?
+                    ( vecViewportDimensionInPixel.y / 32 ) + 1 : ( vecViewportDimensionInPixel.y / 32 ) + 2;
+
+        for ( size_t  y=0; y < vecNumOfMaxVisibleRenderTiles.y; y++ )
         {
             renderTiles.push_back( std::vector< RenderTile* >() );
-            for ( size_t  x=0; x < numOfTilesX; x++ )
-                renderTiles[ y ].emplace_back( new RenderTile( x*32, y*32, "", pixmapAtlas ) );
+
+            for ( size_t  x=0; x < vecNumOfMaxVisibleRenderTiles.x; x++ )
+            {
+                QPixmap emptyPixmap;
+
+                if ( pixmapAtlas )
+                    emptyPixmap = pixmapAtlas->get( "" );
+
+                renderTiles[ y ].emplace_back( new RenderTile( x*32, y*32, emptyPixmap ) );
+            }
         }
 
         //Add RenderTiles to scene
-        for ( size_t  y=0; y < numOfTilesY; y++ )
-            for ( size_t  x=0; x < numOfTilesX; x++ )
+        for ( size_t  y=0; y < vecNumOfMaxVisibleRenderTiles.y; y++ )
+            for ( size_t  x=0; x < vecNumOfMaxVisibleRenderTiles.x; x++ )
                 scene->addItem( renderTiles[ y ][ x ] );
-    }
-
-    TileMap::TileMap( QWidget *parent )
-    {
-        //Scene
-        scene = new TileMapScene( parent );
-
-        //View
-        view = new TileMapView( parent );
-        view->setViewport( new QOpenGLWidget( ) );
-        view->setViewportUpdateMode( QGraphicsView::FullViewportUpdate );
-        view->setRenderHint( QPainter::Antialiasing, false );
-        view->setDragMode( QGraphicsView::RubberBandDrag );
-        view->setOptimizationFlags( QGraphicsView::DontSavePainterState );
-        view->setTransformationAnchor(QGraphicsView::NoAnchor);
-        view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        view->setAlignment( Qt::AlignTop | Qt::AlignLeft );
-        view->setScene( scene );
-
-        //Layout
-        auto layoutV  = new QVBoxLayout;
-        layoutV->addWidget( view );
-
-        QWidget* container = new QWidget;
-        container->setLayout( layoutV );
-        setWidget( container );
-        setWindowTitle( tr( "TileDemoSlow" ) );
-
-        //Connect
-        connect( view, &TileMapView::viewPortSizeChanged,
-                 this, &TileMap::viewPortSizeChanged );
-    }
-
-    void TileMap::viewPortSizeChanged( QRect viewSize )
-    {
-        //Update Viewport sizes
-        setViewport( Vector2D{ 0, 0 },
-                     Vector2D{ static_cast< size_t >( viewSize.width() ),
-                               static_cast< size_t >( viewSize.height() ) } );
-
-        //Prepare RenderTiles (recreate if necessary)
-        prepareRenderTiles();
-
-        //Update map only, when a tilemap exists! ToDo: Check if it is big enough!
-        if ( !tiles.empty() )
-            updateMap();
     }
 
     auto TileMap::getCamera() -> Vector2Df
@@ -184,6 +267,13 @@ namespace gamedev::soulcraft
 
         updateMap(); //Updates the scene
 
+        //Update Scrollbars
+        if ( viewScrollBarVertical->value() != vecCameraPosition.y )
+            viewScrollBarVertical->setValue( vecCameraPosition.y );
+
+        if ( viewScrollBarHorizontal->value() != vecCameraPosition.x )
+            viewScrollBarHorizontal->setValue( vecCameraPosition.x );
+
         if ( !autoCorrected )
             return std::nullopt;
 
@@ -209,7 +299,7 @@ namespace gamedev::soulcraft
             endX = 0;
 
         size_t finalStartX = startX;
-        size_t finalEndX = endX + 1;
+        size_t finalEndX = endX;
 
         size_t startY = vecCameraPosition.y / vecTileDimensionInPixel.y;
         size_t endY = ( vecCameraPosition.y + vecViewportDimensionInPixel.y - 1 ) / vecTileDimensionInPixel.y;
@@ -229,6 +319,14 @@ namespace gamedev::soulcraft
         size_t finalStartY = startY;
         size_t finalEndY = endY;
 
+        const bool maxNumOfVisibleRenderTilesUsedX = ( finalEndX - finalStartX ) + 1 == vecNumOfMaxVisibleRenderTiles.x;
+        if ( !maxNumOfVisibleRenderTilesUsedX )
+            finalEndX = finalEndX + 1;
+
+        const bool maxNumOfVisibleRenderTilesUsedY = ( finalEndY - finalStartY ) + 1 == vecNumOfMaxVisibleRenderTiles.y;
+        if ( !maxNumOfVisibleRenderTilesUsedY )
+            finalEndY = finalEndY + 1;
+
         for ( size_t y = finalStartY; y <= finalEndY; ++y )
         {
             for ( size_t x = finalStartX; x <= finalEndX; ++x )
@@ -242,7 +340,15 @@ namespace gamedev::soulcraft
                 auto renderTilesX = x - finalStartX;
                 auto renderTilesY = y - finalStartY;
                 renderTiles[ renderTilesY ][ renderTilesX ]->setPos( positionX, positionY );
-                renderTiles[ renderTilesY ][ renderTilesX ]->setGraphicId( accessTile( y, x ).getGraphicId() );
+
+                if ( y == finalEndY && !maxNumOfVisibleRenderTilesUsedY )
+                    continue;
+
+               if ( x == finalEndX && !maxNumOfVisibleRenderTilesUsedX )
+                   break;
+
+               renderTiles[ renderTilesY ][ renderTilesX ]->setPixmap(
+                   pixmapAtlas->get( accessTile( x, y ).getGraphicId() ) );
             }
         }
     }

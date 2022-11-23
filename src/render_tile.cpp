@@ -1,30 +1,29 @@
 #include "render_tile.h"
+
 #include <QPainter>
+#include <QPixmap>
 
 namespace gamedev::soulcraft
 {
     RenderTile::RenderTile( size_t x,
                             size_t y,
-                            const std::string &tilePaletteGraphicIdParam,
-                            PixmapAtlas &pixmapAtlasParam ) : tilePaletteGraphicId( tilePaletteGraphicIdParam ),
-                                                              pixmapAtlas( &pixmapAtlasParam )
+                            const QPixmap &pixmapParam )
     {
         this->x = x;
         this->y = y;
-
         setAcceptHoverEvents( true );
-        setGraphicId( tilePaletteGraphicIdParam );
         setPos( QPointF( x, y ) );
         setShapeMode( ShapeMode::BoundingRectShape );
+        setPixmap( pixmapParam );
     }
 
-    auto RenderTile::setGraphicId( const std::string &tilePaletteGraphicIdParam ) -> void
+    auto RenderTile::setPixmap( const QPixmap &pixmapParam ) -> void
     {
-        if ( tilePaletteGraphicId == tilePaletteGraphicIdParam )
-            return;
-
-        tilePaletteGraphicId = tilePaletteGraphicIdParam;
-        setPixmap( pixmapAtlas->get( tilePaletteGraphicId ) );
+        //if ( pixMapCacheKey != pixmapParam.cacheKey() )
+        {
+            QGraphicsPixmapItem::setPixmap( pixmapParam );
+            pixMapCacheKey = pixmapParam.cacheKey();
+        }
     }
 
     auto RenderTile::paint( QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget ) -> void
@@ -42,9 +41,7 @@ namespace gamedev::soulcraft
 
     auto RenderTile::mousePressEvent( QGraphicsSceneMouseEvent *event ) -> void
     {
-        setGraphicId( "mouse_over" );
         QGraphicsPixmapItem::mousePressEvent( event );
-        update();
     }
 }
 
