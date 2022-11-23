@@ -1,5 +1,6 @@
 #include "render_tile.h"
 
+#include <QMessageBox>
 #include <QPainter>
 #include <QPixmap>
 
@@ -11,7 +12,8 @@ namespace gamedev::soulcraft
     {
         this->x = x;
         this->y = y;
-        setAcceptHoverEvents( true );
+        setAcceptHoverEvents( false );                   //ATTENTION
+        setAcceptedMouseButtons( Qt::NoButton );        //ATTENTION
         setPos( QPointF( x, y ) );
         setShapeMode( ShapeMode::BoundingRectShape );
         setPixmap( pixmapParam );
@@ -19,7 +21,7 @@ namespace gamedev::soulcraft
 
     auto RenderTile::setPixmap( const QPixmap &pixmapParam ) -> void
     {
-        //if ( pixMapCacheKey != pixmapParam.cacheKey() )
+        if ( pixMapCacheKey != pixmapParam.cacheKey() )
         {
             QGraphicsPixmapItem::setPixmap( pixmapParam );
             pixMapCacheKey = pixmapParam.cacheKey();
@@ -42,6 +44,9 @@ namespace gamedev::soulcraft
     auto RenderTile::mousePressEvent( QGraphicsSceneMouseEvent *event ) -> void
     {
         QGraphicsPixmapItem::mousePressEvent( event );
+        QMessageBox msgBox;
+        msgBox.setText("Clicked");
+        msgBox.exec();
     }
 }
 
