@@ -22,6 +22,7 @@ namespace gamedev::soulcraft
         view->setOptimizationFlags( QGraphicsView::DontSavePainterState );
         view->setTransformationAnchor(QGraphicsView::NoAnchor);
         view->setAlignment( Qt::AlignTop | Qt::AlignLeft );
+        view->setMouseTracking( true );
         view->setScene( scene );
 
         //View ScrollBars
@@ -59,7 +60,50 @@ namespace gamedev::soulcraft
 
         connect( viewScrollBarHorizontal, &TileMapViewScrollBar::valueChanged,
                  this, &TileMap::viewScrollBarHorizontalValueChanged );
+
+        connect( view, &TileMapView::mouseMoved,
+                 this, &TileMap::viewMouseMoved );
+
+        connect( view, &TileMapView::mousePressed,
+                 this, &TileMap::viewMousePressed );
     }
+
+    void TileMap::viewMouseMoved( QMouseEvent *event )
+    {
+        if( event->buttons() & Qt::LeftButton )
+        {
+            int x = ( event->pos().x() + getCamera().x ) / 32;
+            int y = ( event->pos().y() + getCamera().y ) / 32;
+
+            if ( x < 0 || x >= vecMapDimensionInTiles.x )
+                return;
+
+            if ( y < 0 || y >= vecMapDimensionInTiles.y )
+                return;
+
+            accessTile( x, y ).marked = true;
+            updateMap();
+        }
+    }
+
+    void TileMap::viewMousePressed( QMouseEvent *event )
+    {
+        if( event->buttons() & Qt::LeftButton )
+        {
+            int x = ( event->pos().x() + getCamera().x ) / 32;
+            int y = ( event->pos().y() + getCamera().y ) / 32;
+
+            if ( x < 0 || x >= vecMapDimensionInTiles.x )
+                return;
+
+            if ( y < 0 || y >= vecMapDimensionInTiles.y )
+                return;
+
+            accessTile( x, y ).marked = true;
+            updateMap();
+        }
+    }
+
 
     void TileMap::viewScrollBarVerticalValueChanged( int value )
     {
@@ -179,6 +223,9 @@ namespace gamedev::soulcraft
         //RenderTiles scene
         renderTiles.clear();
 
+        //MarkTiles
+        markTiles.clear();
+
         //Create RenderTiles
         vecNumOfMaxVisibleRenderTiles.x = vecViewportDimensionInPixel.x % 32 == 0 ?
                     ( vecViewportDimensionInPixel.x / 32 ) + 1 : ( vecViewportDimensionInPixel.x / 32 ) + 2;
@@ -190,6 +237,8 @@ namespace gamedev::soulcraft
         {
             renderTiles.push_back( std::vector< RenderTile* >() );
 
+            markTiles.push_back( std::vector< RenderTile* >() );
+
             for ( size_t  x=0; x < vecNumOfMaxVisibleRenderTiles.x; x++ )
             {
                 QPixmap emptyPixmap;
@@ -198,13 +247,25 @@ namespace gamedev::soulcraft
                     emptyPixmap = pixmapAtlas->get( "" );
 
                 renderTiles[ y ].emplace_back( new RenderTile( x*32, y*32, emptyPixmap ) );
+
+                markTiles[ y ].emplace_back( new RenderTile( x*32, y*32, emptyPixmap ) );
             }
         }
 
         //Add RenderTiles to scene
         for ( size_t  y=0; y < vecNumOfMaxVisibleRenderTiles.y; y++ )
             for ( size_t  x=0; x < vecNumOfMaxVisibleRenderTiles.x; x++ )
+            {
                 scene->addItem( renderTiles[ y ][ x ] );
+            }
+
+        //Add markTiles to scene
+        for ( size_t  y=0; y < vecNumOfMaxVisibleRenderTiles.y; y++ )
+            for ( size_t  x=0; x < vecNumOfMaxVisibleRenderTiles.x; x++ )
+            {
+                scene->addItem( markTiles[ y ][ x ] );
+            }
+
     }
 
     auto TileMap::getCamera() -> Vector2Df
@@ -340,6 +401,7 @@ namespace gamedev::soulcraft
                 auto renderTilesX = x - finalStartX;
                 auto renderTilesY = y - finalStartY;
                 renderTiles[ renderTilesY ][ renderTilesX ]->setPos( positionX, positionY );
+                markTiles[ renderTilesY ][ renderTilesX ]->setPos( positionX, positionY );
 
                 if ( y == finalEndY && !maxNumOfVisibleRenderTilesUsedY )
                     continue;
@@ -349,6 +411,14 @@ namespace gamedev::soulcraft
 
                renderTiles[ renderTilesY ][ renderTilesX ]->setPixmap(
                    pixmapAtlas->get( accessTile( x, y ).getGraphicId() ) );
+
+               if ( accessTile( x, y ).marked )
+               {
+                   markTiles[ renderTilesY ][ renderTilesX ]->setPixmap( pixmapAtlas->get( "marked" ) );
+                   markTiles[ renderTilesY ][ renderTilesX ]->setVisible( true );
+               }
+               else
+                   markTiles[ renderTilesY ][ renderTilesX ]->setVisible( false );
             }
         }
     }

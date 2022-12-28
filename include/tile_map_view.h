@@ -18,5 +18,11 @@ namespace gamedev::soulcraft
         Q_OBJECT;
     public:
         explicit TileMapView( QWidget *parent = nullptr );
+
+        void mouseMoveEvent(QMouseEvent *event) override;
+        void mousePressEvent(QMouseEvent *event) override;
+    signals:
+        void mouseMoved( QMouseEvent *event );
+        void mousePressed( QMouseEvent *event );
     };
 }

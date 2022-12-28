@@ -69,6 +69,7 @@ namespace gamedev::soulcraft
         //Create PixmapAtlas
         pixmapAtlas.add( "", QPixmap( "gfx/tile_empty.png" ) );
         pixmapAtlas.add( "mouse_over", QPixmap( "gfx/tile_mouse_over.png" ) );
+        pixmapAtlas.add( "marked", QPixmap( "gfx/tile_marked.png" ) );
         tileMapLeft->setPixmapAtlas( pixmapAtlas );
         tileMapRight->setPixmapAtlas( pixmapAtlas );
 

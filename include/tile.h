@@ -16,5 +16,6 @@ namespace gamedev::soulcraft
 
         auto setGraphicId( const std::string &tilePaletteGraphicIdParam ) -> void;
         auto getGraphicId() -> const std::string&;
+        bool marked { false };
     };
 }

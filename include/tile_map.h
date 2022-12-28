@@ -45,6 +45,9 @@ namespace gamedev::soulcraft
         void topLevelChangedSlot( bool topLevel );
         void viewScrollBarVerticalValueChanged( int );
         void viewScrollBarHorizontalValueChanged( int );
+
+        void viewMouseMoved( QMouseEvent *event );
+        void viewMousePressed( QMouseEvent *event );
     private:
         auto resizeMap() -> void;
 
@@ -62,6 +65,7 @@ namespace gamedev::soulcraft
         TileMapViewScrollBar * viewScrollBarHorizontal{ nullptr };
 
         std::vector< std::vector< RenderTile* > > renderTiles;
+        std::vector< std::vector< RenderTile* > > markTiles;
         std::vector< std::vector< Tile > > tiles;
 
         Vector2D vecViewportPositionInPixel{ 0, 0 };
