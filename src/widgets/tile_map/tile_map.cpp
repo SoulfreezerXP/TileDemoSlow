@@ -47,13 +47,13 @@ namespace gamedev::soulcraft
         layoutV->addWidget( viewScrollBarHorizontal );
         layoutH->addLayout( layoutV );
         layoutH->addWidget( viewScrollBarVertical );
-        QWidget* container = new QWidget;
-        container->setLayout( layoutH );
-        setWidget( container );
-        setWindowTitle( tr( "TileDemoSlow" ) );
+        //QWidget* container = new QWidget;
+        //container->setLayout( layoutH );
+        //setWidget( container );
 
-        connect( this, &QDockWidget::topLevelChanged,
-                 this, &TileMap::topLevelChangedSlot );
+        setLayout( layoutH );
+
+        //setWindowTitle( tr( "TileDemoSlow" ) );
 
         connect( viewScrollBarVertical, &TileMapViewScrollBar::valueChanged,
                  this, &TileMap::viewScrollBarVerticalValueChanged );
@@ -104,7 +104,6 @@ namespace gamedev::soulcraft
         }
     }
 
-
     void TileMap::viewScrollBarVerticalValueChanged( int value )
     {
         if ( getCamera().y != value )
@@ -139,14 +138,9 @@ namespace gamedev::soulcraft
             updateMap();
     }
 
-    void TileMap::topLevelChangedSlot( bool topLevel )
-    {
-        resizeMap();
-    }
-
     void TileMap::resizeEvent( QResizeEvent* event )
     {
-        QDockWidget::resizeEvent( event );
+        QWidget::resizeEvent( event );
         resizeMap();
     }
 

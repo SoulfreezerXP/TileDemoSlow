@@ -19,8 +19,8 @@ auto main( int argc, char *argv[] ) -> int
     QCoreApplication::setApplicationVersion(QT_VERSION_STR);
 
     qDebug() << QStyleFactory::keys();
-    //app.setStyle( QStyleFactory::create( "Fusion" ) ); //windowsvista", "Windows", "Fusion")
-    app.setStyle( QStyleFactory::create( "windowsvista" ) ); //windowsvista", "Windows", "Fusion")
+    app.setStyle( QStyleFactory::create( "Fusion" ) ); //windowsvista", "Windows", "Fusion")
+
 
     QCommandLineParser parser;
     parser.setApplicationDescription( QCoreApplication::applicationName() );
@@ -32,5 +32,4 @@ auto main( int argc, char *argv[] ) -> int
     gamedev::soulcraft::Editor editor;
     editor.showMaximized();
     return app.exec();
-
 }

@@ -11,27 +11,27 @@ namespace gamedev::soulcraft
     {
         QStandardItem *rootNode = model->invisibleRootItem();
 
-            //defining a couple of items
-            QStandardItem *americaItem = new QStandardItem("America");
-            QStandardItem *mexicoItem =  new QStandardItem("Canada");
-            QStandardItem *usaItem =     new QStandardItem("USA");
-            QStandardItem *bostonItem =  new QStandardItem("Boston");
-            QStandardItem *europeItem =  new QStandardItem("Europe");
-            QStandardItem *italyItem =   new QStandardItem("Italy");
-            QStandardItem *romeItem =    new QStandardItem("Rome");
-            QStandardItem *veronaItem =  new QStandardItem("Verona");
+        //defining a couple of items
+        QStandardItem *americaItem = new QStandardItem("America");
+        QStandardItem *mexicoItem =  new QStandardItem("Canada");
+        QStandardItem *usaItem =     new QStandardItem("USA");
+        QStandardItem *bostonItem =  new QStandardItem("Boston");
+        QStandardItem *europeItem =  new QStandardItem("Europe");
+        QStandardItem *italyItem =   new QStandardItem("Italy");
+        QStandardItem *romeItem =    new QStandardItem("Rome");
+        QStandardItem *veronaItem =  new QStandardItem("Verona");
 
-            //building up the hierarchy
-            rootNode->    appendRow(americaItem);
-            rootNode->    appendRow(europeItem);
-            americaItem-> appendRow(mexicoItem);
-            americaItem-> appendRow(usaItem);
-            usaItem->     appendRow(bostonItem);
-            europeItem->  appendRow(italyItem);
-            italyItem->   appendRow(romeItem);
-            italyItem->   appendRow(veronaItem);
+        //building up the hierarchy
+        rootNode->    appendRow(americaItem);
+        rootNode->    appendRow(europeItem);
+        americaItem-> appendRow(mexicoItem);
+        americaItem-> appendRow(usaItem);
+        usaItem->     appendRow(bostonItem);
+        europeItem->  appendRow(italyItem);
+        italyItem->   appendRow(romeItem);
+        italyItem->   appendRow(veronaItem);
 
-        view->setModel(model);
+        view->setModel( model );
         view->expandAll();
 
         auto layoutH  = new QHBoxLayout;

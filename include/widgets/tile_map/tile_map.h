@@ -24,7 +24,7 @@ namespace gamedev::soulcraft
     struct Vector3D { size_t x, y, z; };
     struct Vector3Df { double x, y, z; };
 
-    class TileMap : public QDockWidget
+    class TileMap : public QWidget
     {
         Q_OBJECT
     public:
@@ -44,7 +44,6 @@ namespace gamedev::soulcraft
         auto setCamera( const Vector2Df& vecCameraPositionParam ) -> std::optional< Vector2Df >;
 
     public slots:
-        void topLevelChangedSlot( bool topLevel );
         void viewScrollBarVerticalValueChanged( int );
         void viewScrollBarHorizontalValueChanged( int );
 
