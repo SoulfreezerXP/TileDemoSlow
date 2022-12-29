@@ -13,13 +13,8 @@ namespace gamedev::soulcraft
     class Editor : public QMainWindow
     {
         PixmapAtlas pixmapAtlas;
-
-        //TileMap *tileMapLeft;
-        //TileMap *tileMapRight;
         EditorCanvas *canvas;
         EditorPalette *palette;
-        //TilePalette *tileLayer;
-
         QTextEdit *textEdit;
         QProgressBar  *_progressbar;
         QString curFile;

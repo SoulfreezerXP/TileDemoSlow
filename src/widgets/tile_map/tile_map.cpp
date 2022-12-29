@@ -41,19 +41,19 @@ namespace gamedev::soulcraft
         viewScrollBarHorizontal->setMaximum( 0 );
 
         //Layout
-        auto layoutH  = new QHBoxLayout;
         auto layoutV  = new QVBoxLayout;
         layoutV->addWidget( view );
         layoutV->addWidget( viewScrollBarHorizontal );
+        layoutV->setContentsMargins(0,0,0, 0);
+
+        auto layoutH  = new QHBoxLayout;
         layoutH->addLayout( layoutV );
         layoutH->addWidget( viewScrollBarVertical );
-        //QWidget* container = new QWidget;
-        //container->setLayout( layoutH );
-        //setWidget( container );
+        layoutH->setContentsMargins(0,0,0, 0);
 
         setLayout( layoutH );
 
-        //setWindowTitle( tr( "TileDemoSlow" ) );
+        setWindowTitle( tr( "TileDemoSlow" ) );
 
         connect( viewScrollBarVertical, &TileMapViewScrollBar::valueChanged,
                  this, &TileMap::viewScrollBarVerticalValueChanged );
