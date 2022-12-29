@@ -20,13 +20,13 @@
 namespace gamedev::soulcraft
 {
     Editor::Editor( QWidget *parent ) : QMainWindow( parent ),
-                                        canvas( new EditorCanvas( parent ) ),
-                                        palette( new EditorPalette( parent ) )
+                                        palette( new EditorPalette( parent ) ),
+                                        canvas( new EditorCanvas( parent ) )
     {
         setWindowTitle( tr("SoulCraft ©2022 by Soulfreezer[*]") );
 
-        addDockWidget( Qt::LeftDockWidgetArea, canvas );
-        addDockWidget( Qt::RightDockWidgetArea, palette );
+        addDockWidget( Qt::LeftDockWidgetArea,  palette );
+        addDockWidget( Qt::RightDockWidgetArea, canvas );
 
        //Create necessary stuff
         createActions();
