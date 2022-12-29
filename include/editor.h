@@ -1,7 +1,7 @@
 #pragma once
 
-#include "tile_map/tile_map.h"
-#include "tile_palette/tile_palette.h"
+#include "widgets/editor_canvas/editor_canvas.h"
+#include "widgets/editor_palette/editor_palette.h"
 
 #include <QWidget>
 #include <QMainWindow>
@@ -10,20 +10,21 @@
 
 namespace gamedev::soulcraft
 {
-    class MainWindow : public QMainWindow
+    class Editor : public QMainWindow
     {
         PixmapAtlas pixmapAtlas;
 
-        TileMap *tileMapLeft;
-        TileMap *tileMapRight;
-        TilePalette *tilePalette;
-        TilePalette *tileLayer;
+        //TileMap *tileMapLeft;
+        //TileMap *tileMapRight;
+        EditorCanvas *canvas;
+        EditorPalette *palette;
+        //TilePalette *tileLayer;
 
         QTextEdit *textEdit;
         QProgressBar  *_progressbar;
         QString curFile;
     public:
-        explicit MainWindow( QWidget *parent = nullptr );
+        explicit Editor( QWidget *parent = nullptr );
         auto keyPressEvent( QKeyEvent *event ) -> void override;
         void resizeEvent( QResizeEvent* event ) override;
 

@@ -1,12 +1,13 @@
-#include "tile_palette/tile_palette.h"
+#include "widgets/editor_canvas/editor_canvas.h"
 
 #include <QVBoxLayout>
 #include <QHeaderView>
 
 namespace gamedev::soulcraft
 {
-    TilePalette::TilePalette( QObject *parent ) : model( new QStandardItemModel() ),
-                                                  view( new QTreeView() )
+    EditorCanvas::EditorCanvas( QObject *parent ) : model( new QStandardItemModel() ),
+                                                    view( new QTreeView() ),
+                                                    tileMap( new TileMap() )
     {
         QStandardItem *rootNode = model->invisibleRootItem();
 
@@ -33,14 +34,15 @@ namespace gamedev::soulcraft
         view->setModel(model);
         view->expandAll();
 
-        auto layoutV  = new QVBoxLayout;
-        layoutV->addWidget( view );
+        auto layoutH  = new QHBoxLayout;
+        layoutH->addWidget( view, 1 );
+        layoutH->addWidget( tileMap, 5 );
 
         QWidget* container = new QWidget;
-        container->setLayout( layoutV );
+        container->setLayout( layoutH );
         setWidget( container );
 
-        setWindowTitle( tr( "Palette" ) );
+        setWindowTitle( tr( "Canvas" ) );
     }
 }
 

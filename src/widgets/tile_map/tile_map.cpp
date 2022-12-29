@@ -1,4 +1,4 @@
-#include "tile_map/tile_map.h"
+#include "widgets/tile_map/tile_map.h"
 
 #include <QBoxLayout>
 #include <QTimer>

@@ -1,4 +1,4 @@
-#include "tile_map/tile_render_element.h"
+#include "widgets/tile_map/tile_render_element.h"
 
 #include <QMessageBox>
 #include <QPainter>

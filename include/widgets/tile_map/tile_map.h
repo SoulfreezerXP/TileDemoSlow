@@ -2,11 +2,11 @@
 
 #include "pixmap_atlas/pixmap_atlas.h"
 
-#include "tile_map/tile.h"
-#include "tile_map/tile_render_element.h"
-#include "tile_map/tile_map_scene.h"
-#include "tile_map/tile_map_view.h"
-#include "tile_map/tile_map_view_scroll_bar.h"
+#include "widgets/tile_map/tile.h"
+#include "widgets/tile_map/tile_render_element.h"
+#include "widgets/tile_map/tile_map_scene.h"
+#include "widgets/tile_map/tile_map_view.h"
+#include "widgets/tile_map/tile_map_view_scroll_bar.h"
 
 #include "qobjectdefs.h"
 

@@ -1,4 +1,4 @@
-#include "tile_map/tile_map_view_scroll_bar.h"
+#include "widgets/tile_map/tile_map_view_scroll_bar.h"
 
 namespace gamedev::soulcraft
 {

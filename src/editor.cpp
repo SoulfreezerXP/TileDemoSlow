@@ -1,4 +1,4 @@
-#include "main_window.h"
+#include "editor.h"
 
 #include <QKeyEvent>
 #include <QBoxLayout>
@@ -19,21 +19,22 @@
 
 namespace gamedev::soulcraft
 {
-    MainWindow::MainWindow( QWidget *parent ) : QMainWindow( parent ),
-                                                tileMapLeft( new TileMap( parent ) ),
-                                                tileMapRight( new TileMap( parent ) ),
-                                                tilePalette( new TilePalette( parent ) ),
-                                                tileLayer( new TilePalette( parent ) )
+    Editor::Editor( QWidget *parent ) : QMainWindow( parent ),
+                                                //tileMapLeft( new TileMap( parent ) ),
+                                                //tileMapRight( new TileMap( parent ) ),
+                                                canvas( new EditorCanvas( parent ) ),
+                                                palette( new EditorPalette( parent ) )
+                                                //tileLayer( new TilePalette( parent ) )
     {
         setWindowTitle( tr("SoulCraft ©2022 by Soulfreezer[*]") );
+        addDockWidget( Qt::LeftDockWidgetArea, canvas );
+        addDockWidget( Qt::RightDockWidgetArea, palette );
+        //addDockWidget( Qt::LeftDockWidgetArea, tileMapLeft );
+        //addDockWidget( Qt::RightDockWidgetArea, tileMapRight );
+        //addDockWidget( Qt::RightDockWidgetArea, tileLayer );
 
-        addDockWidget( Qt::LeftDockWidgetArea, tilePalette );
-        addDockWidget( Qt::LeftDockWidgetArea, tileMapLeft );
-        addDockWidget( Qt::RightDockWidgetArea, tileMapRight );
-        addDockWidget( Qt::RightDockWidgetArea, tileLayer );
-
-        splitDockWidget(tilePalette, tileMapLeft, Qt::Horizontal);
-        splitDockWidget(tileMapRight, tileLayer, Qt::Horizontal);
+        //splitDockWidget(tilePalette, tileMapLeft, Qt::Horizontal);
+        //splitDockWidget(tileMapRight, tileLayer, Qt::Horizontal);
 
        //Create necessary stuff
         createActions();
@@ -41,33 +42,36 @@ namespace gamedev::soulcraft
         readSettings();
     }
 
-    void MainWindow::resizeEvent( QResizeEvent* event )
+    void Editor::resizeEvent( QResizeEvent* event )
     {
        QMainWindow::resizeEvent( event );
 
-       const QRect availableGeometry =  QGuiApplication::primaryScreen()->availableGeometry();
+       /*const QRect availableGeometry =  QGuiApplication::primaryScreen()->availableGeometry();
 
        QList< QDockWidget * > docks;
-       docks.append( tilePalette );
-       docks.append( tileMapLeft );
-       docks.append( tileMapRight );
-       docks.append( tileLayer );
+       docks.append( canvas );
+       docks.append( palette );
+       //docks.append( tileMapLeft );
+       //docks.append( tileMapRight );
+       //docks.append( tileLayer );
 
        const double windowWidth =  availableGeometry.width();
 
        QList< int > dockSizes;
-       dockSizes.append( 0.1 * windowWidth );
-       dockSizes.append( 0.4 * windowWidth );
-       dockSizes.append( 0.4 * windowWidth );
-       dockSizes.append( 0.1 * windowWidth );
+       dockSizes.append( 0.5 * windowWidth );
+       dockSizes.append( 0.5 * windowWidth );
 
-       resizeDocks( docks, dockSizes, Qt::Horizontal );
+       //dockSizes.append( 0.4 * windowWidth );
+       //dockSizes.append( 0.4 * windowWidth );
+       //dockSizes.append( 0.1 * windowWidth );
+
+       resizeDocks( docks, dockSizes, Qt::Horizontal );*/
     }
 
-    void MainWindow::paste()
+    void Editor::paste()
     {
         //Create PixmapAtlas
-        pixmapAtlas.add( "", QPixmap( "gfx/tile_empty.png" ) );
+        /*pixmapAtlas.add( "", QPixmap( "gfx/tile_empty.png" ) );
         pixmapAtlas.add( "mouse_over", QPixmap( "gfx/tile_mouse_over.png" ) );
         pixmapAtlas.add( "marked", QPixmap( "gfx/tile_marked.png" ) );
         tileMapLeft->setPixmapAtlas( pixmapAtlas );
@@ -115,34 +119,34 @@ namespace gamedev::soulcraft
                 }
 
             tileMapRight->updateMap();
-        }
+        }*/
     }
 
-    auto MainWindow::keyPressEvent( QKeyEvent *event ) -> void
+    auto Editor::keyPressEvent( QKeyEvent *event ) -> void
     {
-        int camSpeed  = 1;
-        int camSpeedX = 0;
-        int camSpeedY = 0;
+        //int camSpeed  = 1;
+        //int camSpeedX = 0;
+        //int camSpeedY = 0;
 
-        if( event->key() == Qt::Key_D && !event->isAutoRepeat())
-        {
-            camSpeedX = 1 * camSpeed;
+        //if( event->key() == Qt::Key_D && !event->isAutoRepeat())
+        //{
+        //    camSpeedX = 1 * camSpeed;
 
-            auto timer = new QTimer(nullptr);
-            connect(timer, &QTimer::timeout, this, [ this, camSpeedX, camSpeedY ]
-            {
-                tileMapLeft->setCamera( Vector2Df{ tileMapLeft->getCamera().x + camSpeedX,
-                                                   tileMapLeft->getCamera().y + camSpeedY } );
-            });
+        //    auto timer = new QTimer(nullptr);
+        //    connect(timer, &QTimer::timeout, this, [ this, camSpeedX, camSpeedY ]
+        //    {
+        //        tileMapLeft->setCamera( Vector2Df{ tileMapLeft->getCamera().x + camSpeedX,
+        //                                           tileMapLeft->getCamera().y + camSpeedY } );
+        //    });
 
-            timer->start();
+        //    timer->start();
 
-            /*tileMapLeft->setCamera( Vector2Df{ tileMapLeft->getCamera().x + 1,
-                                               tileMapLeft->getCamera().y + camSpeedY } );*/
-        }
+        //    /*tileMapLeft->setCamera( Vector2Df{ tileMapLeft->getCamera().x + 1,
+        //                                       tileMapLeft->getCamera().y + camSpeedY } );*/
+        //}
     }
 
-    void MainWindow::closeEvent( QCloseEvent *event )
+    void Editor::closeEvent( QCloseEvent *event )
     {
         if ( maybeSave() )
         {
@@ -158,7 +162,7 @@ namespace gamedev::soulcraft
     //=====================================
     // FUNCS
     //=====================================
-    void MainWindow::createActions()
+    void Editor::createActions()
     {
         QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
         QToolBar *fileToolBar = addToolBar(tr("File"));
@@ -166,7 +170,7 @@ namespace gamedev::soulcraft
         QAction *newAct = new QAction(newIcon, tr("&New"), this);
         newAct->setShortcuts(QKeySequence::New);
         newAct->setStatusTip(tr("Create a new file"));
-        connect(newAct, &QAction::triggered, this, &MainWindow::newFile);
+        connect(newAct, &QAction::triggered, this, &Editor::newFile);
         fileMenu->addAction(newAct);
         fileToolBar->addAction(newAct);
 
@@ -174,7 +178,7 @@ namespace gamedev::soulcraft
         QAction *openAct = new QAction(openIcon, tr("&Open..."), this);
         openAct->setShortcuts(QKeySequence::Open);
         openAct->setStatusTip(tr("Open an existing file"));
-        connect(openAct, &QAction::triggered, this, &MainWindow::open);
+        connect(openAct, &QAction::triggered, this, &Editor::open);
         fileMenu->addAction(openAct);
         fileToolBar->addAction(openAct);
 
@@ -182,12 +186,12 @@ namespace gamedev::soulcraft
         QAction *saveAct = new QAction(saveIcon, tr("&Save"), this);
         saveAct->setShortcuts(QKeySequence::Save);
         saveAct->setStatusTip(tr("Save the document to disk"));
-        connect(saveAct, &QAction::triggered, this, &MainWindow::save);
+        connect(saveAct, &QAction::triggered, this, &Editor::save);
         fileMenu->addAction(saveAct);
         fileToolBar->addAction(saveAct);
 
         const QIcon saveAsIcon = QIcon::fromTheme("document-save-as");
-        QAction *saveAsAct = fileMenu->addAction(saveAsIcon, tr("Save &As..."), this, &MainWindow::saveAs);
+        QAction *saveAsAct = fileMenu->addAction(saveAsIcon, tr("Save &As..."), this, &Editor::saveAs);
         saveAsAct->setShortcuts(QKeySequence::SaveAs);
         saveAsAct->setStatusTip(tr("Save the document under a new name"));
 
@@ -224,7 +228,7 @@ namespace gamedev::soulcraft
         pasteAct->setShortcuts(QKeySequence::Paste);
         pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current "
                                   "selection"));
-        connect(pasteAct, &QAction::triggered, this, &MainWindow::paste);
+        connect(pasteAct, &QAction::triggered, this, &Editor::paste);
         editMenu->addAction(pasteAct);
         editToolBar->addAction(pasteAct);
 
@@ -233,7 +237,7 @@ namespace gamedev::soulcraft
     #endif // !QT_NO_CLIPBOARD
 
         QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
-        QAction *aboutAct = helpMenu->addAction(tr("&About"), this, &MainWindow::about);
+        QAction *aboutAct = helpMenu->addAction(tr("&About"), this, &Editor::about);
         aboutAct->setStatusTip(tr("Show the application's About box"));
     #ifndef QT_NO_CLIPBOARD
         cutAct->setEnabled(false);
@@ -243,12 +247,12 @@ namespace gamedev::soulcraft
     #endif // !QT_NO_CLIPBOARD
     }
 
-    void MainWindow::createStatusBar()
+    void Editor::createStatusBar()
     {
         statusBar()->showMessage(tr("Ready"));
     }
 
-    void MainWindow::readSettings()
+    void Editor::readSettings()
     {
         /*QSettings settings( QCoreApplication::organizationName(), QCoreApplication::applicationName() );
         const QByteArray geometry = settings.value( "geometry", QByteArray() ).toByteArray();
@@ -264,13 +268,13 @@ namespace gamedev::soulcraft
         }*/
     }
 
-    void MainWindow::writeSettings()
+    void Editor::writeSettings()
     {
         //QSettings settings(QCoreApplication::organizationName(), QCoreApplication::applicationName());
         //settings.setValue("geometry", saveGeometry());
     }
 
-    bool MainWindow::maybeSave()
+    bool Editor::maybeSave()
     {
         //if (!textEdit->document()->isModified())
             //return true;
@@ -291,7 +295,7 @@ namespace gamedev::soulcraft
         return true;
     }
 
-    void MainWindow::loadFile(const QString &fileName)
+    void Editor::loadFile(const QString &fileName)
     {
         QFile file(fileName);
         if (!file.open(QFile::ReadOnly | QFile::Text)) {
@@ -315,7 +319,7 @@ namespace gamedev::soulcraft
         statusBar()->showMessage(tr("File loaded"), 2000);
     }
 
-    bool MainWindow::saveFile(const QString &fileName)
+    bool Editor::saveFile(const QString &fileName)
     {
         QString errorMessage;
 
@@ -346,7 +350,7 @@ namespace gamedev::soulcraft
         return true;
     }
 
-    void MainWindow::setCurrentFile(const QString &fileName)
+    void Editor::setCurrentFile(const QString &fileName)
     {
         curFile = fileName;
         //textEdit->document()->setModified(false);
@@ -358,7 +362,7 @@ namespace gamedev::soulcraft
         setWindowFilePath(shownName);
     }
 
-    QString MainWindow::strippedName(const QString &fullFileName)
+    QString Editor::strippedName(const QString &fullFileName)
     {
         return QFileInfo(fullFileName).fileName();
     }
@@ -367,7 +371,7 @@ namespace gamedev::soulcraft
     // SLOTS
     //=====================================
 
-    void MainWindow::newFile()
+    void Editor::newFile()
     {
       if ( maybeSave() )
       {
@@ -376,7 +380,7 @@ namespace gamedev::soulcraft
       }
     }
 
-    void MainWindow::open()
+    void Editor::open()
     {
         if (maybeSave()) {
             QString fileName = QFileDialog::getOpenFileName(this,QString(),QString(),"HTML-Files (*.html)");
@@ -385,7 +389,7 @@ namespace gamedev::soulcraft
         }
     }
 
-    bool MainWindow::save()
+    bool Editor::save()
     {
         if (curFile.isEmpty()) {
             return saveAs();
@@ -394,7 +398,7 @@ namespace gamedev::soulcraft
         }
     }
 
-    bool MainWindow::saveAs()
+    bool Editor::saveAs()
     {
         QFileDialog dialog(this);
 
@@ -408,13 +412,13 @@ namespace gamedev::soulcraft
         return saveFile(dialog.selectedFiles().first());
     }
 
-    void MainWindow::about()
+    void Editor::about()
     {
        QMessageBox::about(this, tr("About SoulControl"),
                 tr("The <b>SoulControl</b> is a generic and highly customizable multiplatform control client which supports SSH"));
     }
 
-    void MainWindow::documentWasModified()
+    void Editor::documentWasModified()
     {
         //setWindowModified(textEdit->document()->isModified());
         setWindowModified(  true );

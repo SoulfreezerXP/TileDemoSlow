@@ -1,4 +1,4 @@
-#include "tile_map/tile_map_view.h"
+#include "widgets/tile_map/tile_map_view.h"
 #include "qevent.h"
 
 #include <QGraphicsView>
