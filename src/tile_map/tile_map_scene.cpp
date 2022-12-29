@@ -1,4 +1,4 @@
-#include "tile_map_scene.h"
+#include "tile_map/tile_map_scene.h"
 
 namespace gamedev::soulcraft
 {

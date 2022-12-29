@@ -1,4 +1,4 @@
-#include "pixmap_atlas.h"
+#include "pixmap_Atlas/pixmap_atlas.h"
 
 namespace gamedev::soulcraft
 {

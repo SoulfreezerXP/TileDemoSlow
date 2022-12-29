@@ -1,7 +1,7 @@
 #pragma once
 
-#include "tile_map.h"
-#include "tile_palette.h"
+#include "tile_map/tile_map.h"
+#include "tile_palette/tile_palette.h"
 
 #include <QWidget>
 #include <QMainWindow>

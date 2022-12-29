@@ -1,4 +1,4 @@
-#include "tile_palette.h"
+#include "tile_palette/tile_palette.h"
 
 #include <QVBoxLayout>
 #include <QHeaderView>

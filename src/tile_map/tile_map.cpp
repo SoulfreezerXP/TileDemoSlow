@@ -1,4 +1,4 @@
-#include "tile_map.h"
+#include "tile_map/tile_map.h"
 
 #include <QBoxLayout>
 #include <QTimer>
@@ -235,9 +235,9 @@ namespace gamedev::soulcraft
 
         for ( size_t  y=0; y < vecNumOfMaxVisibleRenderTiles.y; y++ )
         {
-            renderTiles.push_back( std::vector< RenderTile* >() );
+            renderTiles.push_back( std::vector< TileRendeElement* >() );
 
-            markTiles.push_back( std::vector< RenderTile* >() );
+            markTiles.push_back( std::vector< TileRendeElement* >() );
 
             for ( size_t  x=0; x < vecNumOfMaxVisibleRenderTiles.x; x++ )
             {
@@ -246,9 +246,9 @@ namespace gamedev::soulcraft
                 if ( pixmapAtlas )
                     emptyPixmap = pixmapAtlas->get( "" );
 
-                renderTiles[ y ].emplace_back( new RenderTile( x*32, y*32, emptyPixmap ) );
+                renderTiles[ y ].emplace_back( new TileRendeElement( x*32, y*32, emptyPixmap ) );
 
-                markTiles[ y ].emplace_back( new RenderTile( x*32, y*32, emptyPixmap ) );
+                markTiles[ y ].emplace_back( new TileRendeElement( x*32, y*32, emptyPixmap ) );
             }
         }
 

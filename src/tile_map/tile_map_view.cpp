@@ -1,4 +1,4 @@
-#include "tile_map_view.h"
+#include "tile_map/tile_map_view.h"
 #include "qevent.h"
 
 #include <QGraphicsView>
@@ -6,9 +6,6 @@
 
 namespace gamedev::soulcraft
 {
-    TileMapViewScrollBar::TileMapViewScrollBar( QWidget *parent ) : QScrollBar( parent )
-    {}
-
     TileMapView::TileMapView( QWidget *parent ) : QGraphicsView( parent )
     {}
 

@@ -1,12 +1,14 @@
 #pragma once
 
-#include "pixmap_atlas.h"
+#include "pixmap_atlas/pixmap_atlas.h"
+
+#include "tile_map/tile.h"
+#include "tile_map/tile_render_element.h"
+#include "tile_map/tile_map_scene.h"
+#include "tile_map/tile_map_view.h"
+#include "tile_map/tile_map_view_scroll_bar.h"
+
 #include "qobjectdefs.h"
-#include "tile.h"
-#include "tile_map_scene.h"
-#include "tile_map_view.h"
-#include "render_tile.h"
-#include "pixmap_atlas.h"
 
 #include <QDockWidget>
 #include <vector>
@@ -64,8 +66,8 @@ namespace gamedev::soulcraft
         TileMapViewScrollBar * viewScrollBarVertical{ nullptr };
         TileMapViewScrollBar * viewScrollBarHorizontal{ nullptr };
 
-        std::vector< std::vector< RenderTile* > > renderTiles;
-        std::vector< std::vector< RenderTile* > > markTiles;
+        std::vector< std::vector< TileRendeElement* > > renderTiles;
+        std::vector< std::vector< TileRendeElement* > > markTiles;
         std::vector< std::vector< Tile > > tiles;
 
         Vector2D vecViewportPositionInPixel{ 0, 0 };
