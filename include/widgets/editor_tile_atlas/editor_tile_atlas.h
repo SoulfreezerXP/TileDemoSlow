@@ -17,6 +17,15 @@ namespace gamedev::soulcraft
         QStandardItemModel *sheetListModel;
         QTreeView *sheetList;
         TileMap *sheetTileMap;
+
+        size_t newSheetsCounter{ 0 };
+
+        auto findSheetListRootItem() -> QStandardItem *;
+        auto findSheetListNextNewNumber() -> std::optional< size_t >;
+    private slots:
+         auto addSheet() -> void;
+         auto deleteSheet() -> void;
+         auto sheetChanged( QStandardItem *item ) -> void;
     public:
          EditorTileAtlas( QObject *parent = nullptr );
     };
