@@ -1,10 +1,251 @@
 <RCC>
     <qresource prefix="/">
-        <file>resources/copy.png</file>
-        <file>resources/cut.png</file>
-        <file>resources/new.png</file>
-        <file>resources/open.png</file>
-        <file>resources/paste.png</file>
-        <file>resources/save.png</file>
+        <file>resources/3d bar chart.png</file>
+        <file>resources/3d chart.png</file>
+        <file>resources/3d graph.png</file>
+        <file>resources/16 colors.png</file>
+        <file>resources/256 colors.png</file>
+        <file>resources/About.png</file>
+        <file>resources/Add folder.png</file>
+        <file>resources/Add.png</file>
+        <file>resources/Angle.png</file>
+        <file>resources/Apply.png</file>
+        <file>resources/Arc.png</file>
+        <file>resources/Arrow.png</file>
+        <file>resources/Attach.png</file>
+        <file>resources/Back.png</file>
+        <file>resources/Bitmap editor.png</file>
+        <file>resources/Brightness.png</file>
+        <file>resources/Brush.png</file>
+        <file>resources/Camera.png</file>
+        <file>resources/Cancel.png</file>
+        <file>resources/Chart xy.png</file>
+        <file>resources/Check boxes.png</file>
+        <file>resources/Circle.png</file>
+        <file>resources/Clear.png</file>
+        <file>resources/Clipboard.png</file>
+        <file>resources/Close file.png</file>
+        <file>resources/Close folder.png</file>
+        <file>resources/Close.png</file>
+        <file>resources/CMYK.png</file>
+        <file>resources/Coffe.png</file>
+        <file>resources/Coffee.png</file>
+        <file>resources/Color balance.png</file>
+        <file>resources/Color filter.png</file>
+        <file>resources/Color layers.png</file>
+        <file>resources/Color palette.png</file>
+        <file>resources/Color profile.png</file>
+        <file>resources/Color test.png</file>
+        <file>resources/Color.png</file>
+        <file>resources/Comment.png</file>
+        <file>resources/Contrast.png</file>
+        <file>resources/Create.png</file>
+        <file>resources/Critical details.png</file>
+        <file>resources/Curve points.png</file>
+        <file>resources/Curve.png</file>
+        <file>resources/Danger.png</file>
+        <file>resources/Decrease time.png</file>
+        <file>resources/Delete frame.png</file>
+        <file>resources/Delete frames.png</file>
+        <file>resources/Delete.png</file>
+        <file>resources/Designer.png</file>
+        <file>resources/Diagram.png</file>
+        <file>resources/Down.png</file>
+        <file>resources/Download image.png</file>
+        <file>resources/Download.png</file>
+        <file>resources/Dropper.png</file>
+        <file>resources/Edit page.png</file>
+        <file>resources/Edit text.png</file>
+        <file>resources/Edit.png</file>
+        <file>resources/Ellipse.png</file>
+        <file>resources/E-mail.png</file>
+        <file>resources/Equipment.png</file>
+        <file>resources/Erase.png</file>
+        <file>resources/Eraser.png</file>
+        <file>resources/Error.png</file>
+        <file>resources/Exit.png</file>
+        <file>resources/Export.png</file>
+        <file>resources/Favourites.png</file>
+        <file>resources/Feather.png</file>
+        <file>resources/File exetension.png</file>
+        <file>resources/Fill.png</file>
+        <file>resources/Find.png</file>
+        <file>resources/Fine brush.png</file>
+        <file>resources/Flip horizontally.png</file>
+        <file>resources/Flip vertically.png</file>
+        <file>resources/Flip.png</file>
+        <file>resources/Flow block.png</file>
+        <file>resources/Flower.png</file>
+        <file>resources/Folder.png</file>
+        <file>resources/Form.png</file>
+        <file>resources/Forward.png</file>
+        <file>resources/Frames.png</file>
+        <file>resources/Funnel.png</file>
+        <file>resources/Go down.png</file>
+        <file>resources/Go up.png</file>
+        <file>resources/Gpadient.png</file>
+        <file>resources/Graphic designer.png</file>
+        <file>resources/Graphic file.png</file>
+        <file>resources/Graphic tools.png</file>
+        <file>resources/Grid.png</file>
+        <file>resources/Help book.png</file>
+        <file>resources/Help.png</file>
+        <file>resources/Hexagon.png</file>
+        <file>resources/Hide.png</file>
+        <file>resources/Hint.png</file>
+        <file>resources/Hints.png</file>
+        <file>resources/Home.png</file>
+        <file>resources/Homepage.png</file>
+        <file>resources/HSL.png</file>
+        <file>resources/HSV.png</file>
+        <file>resources/Ico.png</file>
+        <file>resources/Icon wizard.png</file>
+        <file>resources/Import.png</file>
+        <file>resources/Increase time.png</file>
+        <file>resources/Index.png</file>
+        <file>resources/Info.png</file>
+        <file>resources/Key.png</file>
+        <file>resources/Knife.png</file>
+        <file>resources/LAB color model.png</file>
+        <file>resources/Layers.png</file>
+        <file>resources/Left.png</file>
+        <file>resources/Left-right.png</file>
+        <file>resources/Line.png</file>
+        <file>resources/List.png</file>
+        <file>resources/Lock color.png</file>
+        <file>resources/Lock transparency.png</file>
+        <file>resources/Lock.png</file>
+        <file>resources/Magic hat.png</file>
+        <file>resources/Measure.png</file>
+        <file>resources/Microsoft flag.png</file>
+        <file>resources/Monitor.png</file>
+        <file>resources/Monitors.png</file>
+        <file>resources/Mouse pointer.png</file>
+        <file>resources/Mouse.png</file>
+        <file>resources/Move.png</file>
+        <file>resources/Movie.png</file>
+        <file>resources/New clip art.png</file>
+        <file>resources/New file.png</file>
+        <file>resources/New frame.png</file>
+        <file>resources/New frame1.png</file>
+        <file>resources/New image.png</file>
+        <file>resources/New imagelist.png</file>
+        <file>resources/New video.png</file>
+        <file>resources/No.png</file>
+        <file>resources/Objects.png</file>
+        <file>resources/Ok.png</file>
+        <file>resources/Open colors.png</file>
+        <file>resources/Open file.png</file>
+        <file>resources/Open v2.png</file>
+        <file>resources/Paint over pixels.png</file>
+        <file>resources/Painter.png</file>
+        <file>resources/Pantone.png</file>
+        <file>resources/Pen.png</file>
+        <file>resources/Pencil.png</file>
+        <file>resources/Pick color.png</file>
+        <file>resources/Picture.png</file>
+        <file>resources/Pie chart.png</file>
+        <file>resources/Pin.png</file>
+        <file>resources/Pinion.png</file>
+        <file>resources/Pixel editor.png</file>
+        <file>resources/Pixels.png</file>
+        <file>resources/Play.png</file>
+        <file>resources/Preview.png</file>
+        <file>resources/Print.png</file>
+        <file>resources/Problem.png</file>
+        <file>resources/Properties.png</file>
+        <file>resources/Red book.png</file>
+        <file>resources/Red eye removing.png</file>
+        <file>resources/Redo.png</file>
+        <file>resources/Refresh.png</file>
+        <file>resources/Registration.png</file>
+        <file>resources/Registry.png</file>
+        <file>resources/Rename.png</file>
+        <file>resources/Replace pixels.png</file>
+        <file>resources/Resize image.png</file>
+        <file>resources/Restangle.png</file>
+        <file>resources/Revert.png</file>
+        <file>resources/RGB.png</file>
+        <file>resources/Right.png</file>
+        <file>resources/Rotate CCW.png</file>
+        <file>resources/Rotate CW.png</file>
+        <file>resources/Rotate left.png</file>
+        <file>resources/Rotate right.png</file>
+        <file>resources/Rotation.png</file>
+        <file>resources/Rounded rectangle.png</file>
+        <file>resources/Save as.png</file>
+        <file>resources/Save color.png</file>
+        <file>resources/Save data.png</file>
+        <file>resources/Save image.png</file>
+        <file>resources/Save picture.png</file>
+        <file>resources/Scan film.png</file>
+        <file>resources/Scan image.png</file>
+        <file>resources/Scanner.png</file>
+        <file>resources/Scenario.png</file>
+        <file>resources/Script.png</file>
+        <file>resources/Search computer.png</file>
+        <file>resources/Search folder.png</file>
+        <file>resources/Search online.png</file>
+        <file>resources/Search text.png</file>
+        <file>resources/Search.png</file>
+        <file>resources/Select gpadient.png</file>
+        <file>resources/Selection.png</file>
+        <file>resources/Settings.png</file>
+        <file>resources/Sharpness.png</file>
+        <file>resources/Show.png</file>
+        <file>resources/Sizes.png</file>
+        <file>resources/Smooth line.png</file>
+        <file>resources/Smooth.png</file>
+        <file>resources/Spell checking.png</file>
+        <file>resources/Spiral.png</file>
+        <file>resources/Spray.png</file>
+        <file>resources/Square.png</file>
+        <file>resources/Stop playing.png</file>
+        <file>resources/Stop.png</file>
+        <file>resources/Synchronize.png</file>
+        <file>resources/Tag.png</file>
+        <file>resources/Target.png</file>
+        <file>resources/Target1.png</file>
+        <file>resources/Test line.png</file>
+        <file>resources/Text color.png</file>
+        <file>resources/Text replace.png</file>
+        <file>resources/Text tool.png</file>
+        <file>resources/Time.png</file>
+        <file>resources/Tip of the day.png</file>
+        <file>resources/To do list.png</file>
+        <file>resources/Tools.png</file>
+        <file>resources/Touch.png</file>
+        <file>resources/Transparency.png</file>
+        <file>resources/Transparent background.png</file>
+        <file>resources/Transparent color.png</file>
+        <file>resources/Triangle.png</file>
+        <file>resources/True color.png</file>
+        <file>resources/Undo.png</file>
+        <file>resources/Units.png</file>
+        <file>resources/Unlock.png</file>
+        <file>resources/Up.png</file>
+        <file>resources/Up-down.png</file>
+        <file>resources/Upload image.png</file>
+        <file>resources/Wait.png</file>
+        <file>resources/Warning.png</file>
+        <file>resources/Web designer.png</file>
+        <file>resources/Webcam.png</file>
+        <file>resources/Wide brush.png</file>
+        <file>resources/Wizard.png</file>
+        <file>resources/Work area.png</file>
+        <file>resources/Writing pencil.png</file>
+        <file>resources/Wrong.png</file>
+        <file>resources/Yes.png</file>
+        <file>resources/YUV color space.png</file>
+        <file>resources/Zoom auto.png</file>
+        <file>resources/Zoom in.png</file>
+        <file>resources/Zoom out.png</file>
+        <file>resources/Zoom.png</file>
+        <file>resources/QTCopy.png</file>
+        <file>resources/QTCut.png</file>
+        <file>resources/QTNew.png</file>
+        <file>resources/QTOpen.png</file>
+        <file>resources/QTPaste.png</file>
+        <file>resources/QTSave.png</file>
     </qresource>
 </RCC>

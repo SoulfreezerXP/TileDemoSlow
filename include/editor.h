@@ -1,7 +1,8 @@
 #pragma once
 
-#include "widgets/editor_canvas/editor_canvas.h"
-#include "widgets/editor_palette/editor_palette.h"
+#include "pixmap_atlas/pixmap_atlas.h"
+#include "widgets/editor_tile_map/editor_tile_map.h"
+#include "widgets/editor_tile_atlas/editor_tile_atlas.h"
 
 #include <QWidget>
 #include <QMainWindow>
@@ -13,8 +14,8 @@ namespace gamedev::soulcraft
     class Editor : public QMainWindow
     {
         PixmapAtlas pixmapAtlas;
-        EditorPalette *palette;
-        EditorCanvas *canvas;
+        EditorTileAtlas *tileAtlas;
+        EditorTileMap *tileMap;
         QTextEdit *textEdit;
         QProgressBar  *_progressbar;
         QString curFile;

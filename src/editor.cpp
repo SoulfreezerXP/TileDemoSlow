@@ -20,13 +20,13 @@
 namespace gamedev::soulcraft
 {
     Editor::Editor( QWidget *parent ) : QMainWindow( parent ),
-                                        palette( new EditorPalette( parent ) ),
-                                        canvas( new EditorCanvas( parent ) )
+                                        tileAtlas( new EditorTileAtlas( parent ) ),
+                                        tileMap( new EditorTileMap( parent ) )
     {
         setWindowTitle( tr("SoulCraft ©2022 by Soulfreezer[*]") );
 
-        addDockWidget( Qt::LeftDockWidgetArea,  palette );
-        addDockWidget( Qt::RightDockWidgetArea, canvas );
+        addDockWidget( Qt::LeftDockWidgetArea,  tileAtlas );
+        addDockWidget( Qt::RightDockWidgetArea, tileMap );
 
        //Create necessary stuff
         createActions();
@@ -156,28 +156,28 @@ namespace gamedev::soulcraft
     //=====================================
     void Editor::createActions()
     {
-        QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
+        QMenu *fileMenu = menuBar()->addMenu(tr("&Project"));
         QToolBar *fileToolBar = addToolBar(tr("File"));
-        const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/resources/new.png"));
+        const QIcon newIcon = QIcon::fromTheme("document-new", QIcon(":/resources/QTNew.png"));
         QAction *newAct = new QAction(newIcon, tr("&New"), this);
         newAct->setShortcuts(QKeySequence::New);
-        newAct->setStatusTip(tr("Create a new file"));
+        newAct->setStatusTip(tr("Create a new project"));
         connect(newAct, &QAction::triggered, this, &Editor::newFile);
         fileMenu->addAction(newAct);
         fileToolBar->addAction(newAct);
 
-        const QIcon openIcon = QIcon::fromTheme("document-open", QIcon(":/resources/open.png"));
+        const QIcon openIcon = QIcon::fromTheme("document-open", QIcon(":/resources/QTOpen.png"));
         QAction *openAct = new QAction(openIcon, tr("&Open..."), this);
         openAct->setShortcuts(QKeySequence::Open);
-        openAct->setStatusTip(tr("Open an existing file"));
+        openAct->setStatusTip(tr("Open an existing project"));
         connect(openAct, &QAction::triggered, this, &Editor::open);
         fileMenu->addAction(openAct);
         fileToolBar->addAction(openAct);
 
-        const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/resources/save.png"));
+        const QIcon saveIcon = QIcon::fromTheme("document-save", QIcon(":/resources/QTSave"));
         QAction *saveAct = new QAction(saveIcon, tr("&Save"), this);
         saveAct->setShortcuts(QKeySequence::Save);
-        saveAct->setStatusTip(tr("Save the document to disk"));
+        saveAct->setStatusTip(tr("Save the project to disk"));
         connect(saveAct, &QAction::triggered, this, &Editor::save);
         fileMenu->addAction(saveAct);
         fileToolBar->addAction(saveAct);
@@ -185,7 +185,7 @@ namespace gamedev::soulcraft
         const QIcon saveAsIcon = QIcon::fromTheme("document-save-as");
         QAction *saveAsAct = fileMenu->addAction(saveAsIcon, tr("Save &As..."), this, &Editor::saveAs);
         saveAsAct->setShortcuts(QKeySequence::SaveAs);
-        saveAsAct->setStatusTip(tr("Save the document under a new name"));
+        saveAsAct->setStatusTip(tr("Save the project under a new name"));
 
         fileMenu->addSeparator();
 
@@ -197,7 +197,7 @@ namespace gamedev::soulcraft
         QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
         QToolBar *editToolBar = addToolBar(tr("Edit"));
     #ifndef QT_NO_CLIPBOARD
-        const QIcon cutIcon = QIcon::fromTheme("edit-cut", QIcon(":/resources/cut.png"));
+        const QIcon cutIcon = QIcon::fromTheme("edit-cut", QIcon(":/resources/QTCut.png"));
         QAction *cutAct = new QAction(cutIcon, tr("Cu&t"), this);
         cutAct->setShortcuts(QKeySequence::Cut);
         cutAct->setStatusTip(tr("Cut the current selection's contents to the "
@@ -206,7 +206,7 @@ namespace gamedev::soulcraft
         editMenu->addAction(cutAct);
         editToolBar->addAction(cutAct);
 
-        const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/resources/copy.png"));
+        const QIcon copyIcon = QIcon::fromTheme("edit-copy", QIcon(":/resources/QTCopy.png"));
         QAction *copyAct = new QAction(copyIcon, tr("&Copy"), this);
         copyAct->setShortcuts(QKeySequence::Copy);
         copyAct->setStatusTip(tr("Copy the current selection's contents to the "
@@ -215,7 +215,7 @@ namespace gamedev::soulcraft
         editMenu->addAction(copyAct);
         editToolBar->addAction(copyAct);
 
-        const QIcon pasteIcon = QIcon::fromTheme("edit-paste", QIcon(":/resources/paste.png"));
+        const QIcon pasteIcon = QIcon::fromTheme("edit-paste", QIcon(":/resources/QTPaste.png"));
         QAction *pasteAct = new QAction(pasteIcon, tr("&Paste"), this);
         pasteAct->setShortcuts(QKeySequence::Paste);
         pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current "
@@ -406,8 +406,8 @@ namespace gamedev::soulcraft
 
     void Editor::about()
     {
-       QMessageBox::about(this, tr("About SoulControl"),
-                tr("The <b>SoulControl</b> is a generic and highly customizable multiplatform control client which supports SSH"));
+       QMessageBox::about(this, tr("About SoulCraft"),
+                tr("<b>SoulCraft</b> is a multiplatform tile-map editor for creating 2d-games with the <b>SoulEngine</b>"));
     }
 
     void Editor::documentWasModified()
